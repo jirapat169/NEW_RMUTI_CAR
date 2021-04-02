@@ -26,7 +26,7 @@ const ThemeConfig = createMuiTheme({
 const initialState = { tabSidenav: true };
 
 function MyApp({ Component, pageProps }) {
-  const [userLogin, patchUserLogin] = useLocalStorage("userLogin");
+  const [userLogin, patchUserLogin] = useLocalStorage("userLogin", {});
   const [state, patchState] = useState(initialState);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }) {
         patchState={(e) => {
           patchState({ ...state, ...e });
         }}
-        userLogin={{ ...userLogin }}
+        userLogin={Object.keys(userLogin).length > 0 ? userLogin : null}
         patchUserLogin={(e) => {
           patchUserLogin(e);
         }}

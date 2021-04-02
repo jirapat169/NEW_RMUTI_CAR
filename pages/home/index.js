@@ -1,15 +1,8 @@
 import React, { Component } from "react";
 import Dashboard from "../../components/Dashboard";
 
-export default class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const Home = (props) => {
+  return <Dashboard {...props}>{props.env["mode"]}</Dashboard>;
+};
 
-  componentDidMount() {}
-
-  render() {
-    return <Dashboard {...this.props}>{this.props.env["mode"]}</Dashboard>;
-  }
-}
+export default Home;
