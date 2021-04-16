@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import useLocalStorage from "../components/useLocalStorage";
 import { createMuiTheme } from "@material-ui/core/styles";
 import red from "@material-ui/core/colors/red";
+import Guard from "../guards/guard";
 
 const env = require(`../environments/${process.env.mode}`).default;
 const ThemeConfig = createMuiTheme({
@@ -38,18 +39,33 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ThemeProvider theme={ThemeConfig}>
-      <Component
+      <Guard
         {...pageProps}
         {...state}
         patchState={(e) => {
           patchState({ ...state, ...e });
         }}
         userLogin={Object.keys(userLogin).length > 0 ? userLogin : null}
+        isLogin={Object.keys(userLogin).length > 0 ? true : false}
         patchUserLogin={(e) => {
           patchUserLogin(e);
         }}
         env={env}
-      />
+      >
+        <Component
+          {...pageProps}
+          {...state}
+          patchState={(e) => {
+            patchState({ ...state, ...e });
+          }}
+          userLogin={Object.keys(userLogin).length > 0 ? userLogin : null}
+          isLogin={Object.keys(userLogin).length > 0 ? true : false}
+          patchUserLogin={(e) => {
+            patchUserLogin(e);
+          }}
+          env={env}
+        />
+      </Guard>
     </ThemeProvider>
   );
 }
