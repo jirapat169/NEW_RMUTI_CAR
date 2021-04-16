@@ -20,3 +20,16 @@ body {
 .fab {
   font-family: "Font Awesome 5 Brands" !important;
 }
+
+.box-padding {
+  padding: 15px;
+}
+
+.modal {
+  z-index: 20000 !important;
+  background-color: rgba(0, 0, 0, 0.514);
+}
+
+.modal-backdrop.show {
+  display: none !important;
+}

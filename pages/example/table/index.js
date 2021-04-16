@@ -47,67 +47,66 @@ const TableExample = (props) => {
             </tr>
           </tbody>
         </table>
-      </Dashboard>
-
-      <style jsx>{`
-        table {
-          border-collapse: collapse;
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          table-layout: fixed;
-        }
-
-        table tr {
-          padding: 0.35em;
-        }
-
-        table th,
-        table td {
-          padding: 0.625em;
-          text-align: center;
-        }
-
-        table th {
-          font-size: 16px;
-          letter-spacing: 0.1em;
-        }
-
-        tr,
-        td,
-        th {
-          border: 1px solid #e0e0e0;
-        }
-
-        @media screen and (max-width: 900px) {
-          table thead {
-            clip: rect(0 0 0 0);
-            height: 1px;
-            margin: -1px;
-            overflow: hidden;
+        <style jsx>{`
+          table {
+            border-collapse: collapse;
+            margin: 0;
             padding: 0;
-            position: absolute;
-            width: 1px;
+            width: 100%;
+            table-layout: fixed;
           }
 
           table tr {
-            display: block;
-            margin-bottom: 0.625em;
+            padding: 0.35em;
           }
 
+          table th,
           table td {
-            display: block;
-            text-align: right;
-            border: none;
+            padding: 0.625em;
+            text-align: center;
           }
 
-          table td::before {
-            content: attr(data-label);
-            float: left;
-            font-weight: bold;
+          table th {
+            font-size: 16px;
+            letter-spacing: 0.1em;
           }
-        }
-      `}</style>
+
+          tr,
+          td,
+          th {
+            border: 1px solid #e0e0e0;
+          }
+
+          @media screen and (max-width: 900px) {
+            table thead {
+              clip: rect(0 0 0 0);
+              height: 1px;
+              margin: -1px;
+              overflow: hidden;
+              padding: 0;
+              position: absolute;
+              width: 1px;
+            }
+
+            table tr {
+              display: block;
+              margin-bottom: 0.625em;
+            }
+
+            table td {
+              display: block;
+              text-align: right;
+              border: none;
+            }
+
+            table td::before {
+              content: attr(data-label);
+              float: left;
+              font-weight: bold;
+            }
+          }
+        `}</style>
+      </Dashboard>
     </React.Fragment>
   );
 };

@@ -110,43 +110,72 @@ const ActiveLink = ({ href, children }) => {
 
 const Dashboard = (props) => {
   const classes = useStyles();
-
+  // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const [menuList, setMenuList] = React.useState([]);
   const handleDrawerOpen = () => {
     props.patchState({ tabSidenav: true });
   };
-
   const handleDrawerClose = () => {
     props.patchState({ tabSidenav: false });
   };
 
-  // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const menuList = [
-    {
-      pathname: "/home",
-      title: "หน้าหลัก",
-      icon: "fas fa-home",
-    },
-    {
-      pathname: "/example/calendar",
-      title: "Calendar Events",
-      icon: "fas fa-calendar-alt",
-    },
-    {
-      pathname: "/example/froala",
-      title: "Froala Editor",
-      icon: "fas fa-edit",
-    },
-    {
-      pathname: "/example/accordion",
-      title: "Accordion",
-      icon: "fas fa-border-all",
-    },
-    {
-      pathname: "/example/table",
-      title: "Table",
-      icon: "fas fa-table",
-    },
-  ];
+  React.useEffect(() => {
+    if (props.userLogin.role == "user") {
+      setMenuList([
+        {
+          pathname: "/home",
+          title: "หน้าหลัก",
+          icon: "fas fa-home",
+        },
+        {
+          pathname: "/user",
+          title: "ขอใช้ยานพาหนะ",
+          icon: "fas fa-car",
+        },
+      ]);
+    } else if (props.userLogin.role == "admin") {
+      setMenuList([
+        {
+          pathname: "/home",
+          title: "หน้าหลัก",
+          icon: "fas fa-home",
+        },
+        {
+          pathname: "/admin/carmanage",
+          title: "จัดการยานพาหนะ",
+          icon: "fas fa-car",
+        },
+      ]);
+    }
+
+    // setMenuList([
+    //   {
+    //     pathname: "/home",
+    //     title: "หน้าหลัก",
+    //     icon: "fas fa-home",
+    //   },
+    //   {
+    //     pathname: "/example/calendar",
+    //     title: "Calendar Events",
+    //     icon: "fas fa-calendar-alt",
+    //   },
+    //   {
+    //     pathname: "/example/froala",
+    //     title: "Froala Editor",
+    //     icon: "fas fa-edit",
+    //   },
+    //   {
+    //     pathname: "/example/accordion",
+    //     title: "Accordion",
+    //     icon: "fas fa-border-all",
+    //   },
+    //   {
+    //     pathname: "/example/table",
+    //     title: "Table",
+    //     icon: "fas fa-table",
+    //   },
+    // ]);
+  }, []);
 
   return (
     <React.Fragment>
@@ -221,6 +250,18 @@ const Dashboard = (props) => {
                 </ActiveLink>
               );
             })}
+            <div
+              className={
+                props.tabSidenav ? "link-theme" : "link-theme text-center"
+              }
+              onClick={() => {
+                window.localStorage.clear();
+                window.location.reload();
+              }}
+            >
+              <i className={"fas fa-sign-out-alt"}></i>
+              {props.tabSidenav && <span className="ml-3">{"ออกจากระบบ"}</span>}
+            </div>
           </div>
         </Drawer>
         <main className={classes.content}>
