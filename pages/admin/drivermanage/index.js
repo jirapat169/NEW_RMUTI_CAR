@@ -2,7 +2,7 @@ import React from "react";
 import Dashboard from "../../../components/Dashboard";
 import FormCar from "./formCar";
 
-const CarManage = (props) => {
+const DriverManage = (props) => {
   const [stateCar, setStateCar] = React.useState(false);
   const [detailCar, setDetailCar] = React.useState({ select: "" });
 
@@ -12,7 +12,7 @@ const CarManage = (props) => {
         <div className="box-padding">
           <div className="row">
             <div className="col-9 mb-3">
-              <h2>รายการยานพาหนะ</h2>
+              <h2>รายการพนักงานขับยานพาหนะ</h2>
             </div>
             <div className="col-3 mb-3">
               <div className="text-right">
@@ -44,28 +44,13 @@ const CarManage = (props) => {
                     </div>
                     <div className="col-md-6">
                       <h5>
-                        <b>ยี่ห้อ</b> : Honda
+                        <b>ชื่อ</b> : นายจิรพัฒน์ สุคนธพงศ์
                       </h5>
                       <h5>
-                        <b>รุ่น</b> : Wave 110i
+                        <b>อีเมล์</b> : jirapat.sk@rmuti.ac.th
                       </h5>
                       <h5>
-                        <b>ประเภทยานพาหนะ</b> : Wave 110i
-                      </h5>
-                      <h5>
-                        <b>สี</b> : แดง
-                      </h5>
-                      <h5>
-                        <b>ประเภทน้ำมัน</b> : เบนซิน
-                      </h5>
-                      <h5>
-                        <b>หมายเลขทะเบียน</b> : 1กธ 473
-                      </h5>
-                      <h5>
-                        <b>ปีที่ซื้อ</b> : 2543
-                      </h5>
-                      <h5>
-                        <b>ขนาดที่นั่ง</b> : 2
+                        <b>เบอร์โทรศัพท์</b> : 0981966915
                       </h5>
                     </div>
                   </div>
@@ -103,4 +88,4 @@ const CarManage = (props) => {
   );
 };
 
-export default CarManage;
+export default DriverManage;

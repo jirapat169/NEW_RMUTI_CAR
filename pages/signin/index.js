@@ -57,7 +57,7 @@ export default function SignIn(props) {
       prename: "นาย",
       firstname: "จิรพัฒน์",
       lastname: "สุคนธพงศ์",
-      role: "admin",
+      role: "user",
     });
 
     window.location.replace("/");

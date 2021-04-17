@@ -128,7 +128,7 @@ const Dashboard = (props) => {
           icon: "fas fa-home",
         },
         {
-          pathname: "/user",
+          pathname: "/user/request",
           title: "ขอใช้ยานพาหนะ",
           icon: "fas fa-car",
         },
@@ -142,8 +142,13 @@ const Dashboard = (props) => {
         },
         {
           pathname: "/admin/carmanage",
-          title: "จัดการยานพาหนะ",
+          title: "ยานพาหนะ",
           icon: "fas fa-car",
+        },
+        {
+          pathname: "/admin/drivermanage",
+          title: "พนักงานขับยานพาหนะ",
+          icon: "fas fa-address-card",
         },
       ]);
     }
