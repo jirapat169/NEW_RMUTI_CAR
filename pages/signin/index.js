@@ -12,6 +12,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useForm, Controller } from "react-hook-form";
 import useLocalStorage from "../../components/useLocalStorage";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 function Copyright() {
   return (
@@ -49,18 +51,34 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn(props) {
   const classes = useStyles();
   const { control, handleSubmit } = useForm();
-  const [userLogin, patchUserLogin] = useLocalStorage("userLogin", {});
+  const router = useRouter();
+  // const [userLogin, patchUserLogin] = useLocalStorage("userLogin", {});
 
   const onSubmit = (data) => {
-    patchUserLogin({
-      username: "user",
-      prename: "นาย",
-      firstname: "จิรพัฒน์",
-      lastname: "สุคนธพงศ์",
-      role: "user",
-    });
-
-    window.location.replace("/");
+    axios
+      .post(`${props.env.api_url}user/loginmanual`, JSON.stringify(data))
+      .then((val) => {
+        console.log(val.data);
+        if (val.data.success) {
+          props.patchUserLogin(val.data.result);
+          router.replace("/");
+        } else {
+          props.patchUserLogin({});
+          alert("ข้อมูลผู้ใช้งานไม่ถูกต้อง");
+        }
+      })
+      .catch((reason) => {
+        console.log(reason);
+        props.patchUserLogin({});
+        alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+      });
+    // patchUserLogin({
+    //   username: "user",
+    //   prename: "นาย",
+    //   firstname: "จิรพัฒน์",
+    //   lastname: "สุคนธพงศ์",
+    //   role: "user",
+    // });
   };
 
   return (

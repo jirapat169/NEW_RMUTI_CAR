@@ -2,9 +2,22 @@ import React from "react";
 import Dashboard from "../../../components/Dashboard";
 import FormCar from "./formCar";
 
+const defaultDetail = {
+  id: "",
+  img: "",
+  brand: "",
+  model: "",
+  vehicle_type: "",
+  color: "",
+  oil_type: "",
+  registration_number: "",
+  year_buy: "",
+  delete_at: "",
+};
+
 const CarManage = (props) => {
   const [stateCar, setStateCar] = React.useState(false);
-  const [detailCar, setDetailCar] = React.useState({ select: "" });
+  const [detailCar, setDetailCar] = React.useState({ ...defaultDetail });
 
   return (
     <React.Fragment>
@@ -23,7 +36,7 @@ const CarManage = (props) => {
                   data-target="#formCarModal"
                   onClick={() => {
                     setStateCar(true);
-                    setDetailCar({ select: "" });
+                    setDetailCar({ ...defaultDetail });
                   }}
                 >
                   เพิ่มข้อมูล
@@ -78,7 +91,7 @@ const CarManage = (props) => {
                       data-target="#formCarModal"
                       onClick={() => {
                         setStateCar(false);
-                        setDetailCar({ select: "hello" });
+                        setDetailCar({ brand: "hello" });
                       }}
                     >
                       แก้ไข

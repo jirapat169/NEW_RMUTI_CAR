@@ -11,6 +11,7 @@
     "@date-io/date-fns": "^2.10.8",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "axios": "^0.21.1",
     "moment": "^2.29.1",
     "next": "10.0.1",
     "next-router-events": "^2.1.0",

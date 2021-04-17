@@ -1,14 +1,28 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
+import axios from "axios";
 
 const FormCar = (props) => {
   // console.log("props -> ", props.detailCar);
   const { control, handleSubmit, reset } = useForm(props.detailCar);
   const [defaultValue, setDefaultValue] = React.useState(props.detailCar);
+  const [carImg, setCarImage] = React.useState(null);
 
   const onSubmit = (data) => {
-    console.log(data);
+    let tmp = {
+      ...data,
+      ...{ img: carImg, id: "", insertStatus: props.onInsertCar },
+    };
+
+    axios
+      .post(`${props.env.api_url}carstock/request`, JSON.stringify(tmp))
+      .then((value) => {
+        console.log(value.data);
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
   };
 
   React.useEffect(() => {
@@ -26,7 +40,7 @@ const FormCar = (props) => {
         aria-hidden="true"
       >
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-          <div className="modal-dialog">
+          <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="formCarModalLabel">
@@ -42,19 +56,178 @@ const FormCar = (props) => {
                 </button>
               </div>
               <div className="modal-body">
-                <Controller
-                  render={({ field, value, onChange }) => (
-                    <TextField
-                      {...field}
-                      label="Standard"
-                      onChange={onChange}
-                      value={value}
+                <div className="row">
+                  <div className="col-lg-6 mb-3">
+                    {(() => {
+                      if (carImg) {
+                        return (
+                          <div
+                            className="text-center"
+                            style={{ overflow: "auto" }}
+                          >
+                            <img src={carImg} width={"200px"} />
+                          </div>
+                        );
+                      }
+                    })()}
+
+                    <div className="text-center mt-3 mb-2">
+                      <input
+                        type="file"
+                        id="carImgSelect"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          e.preventDefault();
+                          let tmp = [...e.target.files];
+                          e.target.value = "";
+
+                          const toBase64 = (file) =>
+                            new Promise((resolve, reject) => {
+                              const reader = new FileReader();
+                              reader.readAsDataURL(file);
+                              reader.onload = () => resolve(reader.result);
+                              reader.onerror = (error) => reject(error);
+                            });
+
+                          let img = await toBase64(tmp[0]);
+
+                          setCarImage(img);
+                        }}
+                        style={{ display: "none" }}
+                      />
+
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => {
+                          document.getElementById("carImgSelect").click();
+                        }}
+                      >
+                        เลือกรูปภาพ
+                      </button>
+                    </div>
+
+                    <Controller
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="ยี่ห้อ"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                      control={control}
+                      name="brand"
+                      defaultValue={defaultValue.brand}
                     />
-                  )}
-                  control={control}
-                  name="select"
-                  defaultValue={defaultValue.select}
-                />
+
+                    <Controller
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="รุ่น"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                      control={control}
+                      name="model"
+                      defaultValue={defaultValue.model}
+                    />
+                  </div>
+                  <div className="col-lg-6 mb-3">
+                    <Controller
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="ประเภทยานพาหนะ"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                      control={control}
+                      name="vehicle_type"
+                      defaultValue={defaultValue.vehicle_type}
+                    />
+
+                    <Controller
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="สี"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                      control={control}
+                      name="color"
+                      defaultValue={defaultValue.color}
+                    />
+
+                    <Controller
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="ประเภทน้ำมัน"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                      control={control}
+                      name="oil_type"
+                      defaultValue={defaultValue.oil_type}
+                    />
+
+                    <Controller
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="หมายเลขทะเบียน"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                      control={control}
+                      name="registration_number"
+                      defaultValue={defaultValue.registration_number}
+                    />
+
+                    <Controller
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="ปีที่ซื้อ"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                      control={control}
+                      name="year_buy"
+                      defaultValue={defaultValue.year_buy}
+                    />
+                  </div>
+                </div>
               </div>
               <div className="modal-footer">
                 <button

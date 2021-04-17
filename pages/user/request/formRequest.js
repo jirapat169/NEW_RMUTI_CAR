@@ -1,17 +1,37 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
+import axios from "axios";
 
 const FormRequest = (props) => {
-  // console.log("props -> ", props.defaultValue);
+  //  console.log("props -> ", props.defaultValue);
   const { control, handleSubmit, reset } = useForm(props.defaultValue);
   const [defaultValue, setDefaultValue] = React.useState(props.defaultValue);
+
   const [listTeacher, setListTeacher] = React.useState([]);
   const [listStudent, setListStudent] = React.useState([]);
   const [counterTeacher, setCounterTeacher] = React.useState(0);
   const [counterStudent, setCounterStudent] = React.useState(0);
 
   const onSubmit = (data) => {
+    let tmp = {
+      id: "",
+      insertStatus: props.onInsertRequest,
+      list_student: data.list_student ? [...data.list_student].join() : "",
+      list_teacher: data.list_teacher ? [...data.list_teacher].join() : "",
+      username: props.userLogin.username,
+    };
+    data = { ...data, ...tmp };
+
+    axios
+      .post(`${props.env.api_url}requestcar/request`, JSON.stringify(data))
+      .then((val) => {
+        console.log(val.data);
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
+
     console.log(data);
   };
 

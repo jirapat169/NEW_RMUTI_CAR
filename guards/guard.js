@@ -1,10 +1,13 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 const Guard = (props) => {
   const AllowPath = ["signin", "register"];
   const [loading, setLoading] = React.useState(false);
+  const router = useRouter();
 
   React.useEffect(() => {
+    console.log(router.pathname);
     setLoading(true);
   }, []);
 
@@ -13,9 +16,7 @@ const Guard = (props) => {
       <React.Fragment>
         {(() => {
           if (
-            AllowPath.indexOf(
-              `${window.location.pathname.replace(/\//g, "")}`
-            ) != -1
+            AllowPath.indexOf(`${router.pathname.replace(/\//g, "")}`) != -1
           ) {
             return <>{props.children}</>;
           } else {
@@ -29,7 +30,7 @@ const Guard = (props) => {
                   </div>
 
                   {(() => {
-                    window.location.replace("/signin");
+                    router.replace("/signin");
                   })()}
                 </>
               );

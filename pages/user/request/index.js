@@ -74,6 +74,7 @@ const Admin = (props) => {
       <FormRequest
         defaultValue={detail}
         onInsertRequest={stateRequest}
+        {...props}
       ></FormRequest>
     </Dashboard>
   );

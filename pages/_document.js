@@ -28,20 +28,26 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <link rel="stylesheet" href={`/vendors/bootstrap.min.css`} />
           <link
             rel="stylesheet"
-            href={`/vendors/froala_editor/css/froala_editor.min.css`}
+            href={`${process.env.basePath}/vendors/bootstrap.min.css`}
           />
           <link
             rel="stylesheet"
-            href={`/vendors/froala_editor/css/froala_editor.pkgd.min.css`}
+            href={`${process.env.basePath}/vendors/froala_editor/css/froala_editor.min.css`}
           />
           <link
             rel="stylesheet"
-            href={`/vendors/froala_editor/css/plugins.pkgd.min.css`}
+            href={`${process.env.basePath}/vendors/froala_editor/css/froala_editor.pkgd.min.css`}
           />
-          <link rel="stylesheet" href={`/vendors/all.css`} />
+          <link
+            rel="stylesheet"
+            href={`${process.env.basePath}/vendors/froala_editor/css/plugins.pkgd.min.css`}
+          />
+          <link
+            rel="stylesheet"
+            href={`${process.env.basePath}/vendors/all.css`}
+          />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap"
@@ -50,10 +56,16 @@ export default class MyDocument extends Document {
         </Head>
         <body>
           <Main />
-          <script src={`/vendors/jquery-3.5.1.min.js`} />
-          <script src={`/vendors/bootstrap.bundle.min.js`} />
-          <script src={`/vendors/froala_editor/js/froala_editor.pkgd.min.js`} />
-          <script src={`/vendors/froala_editor/js/plugins.pkgd.min.js`} />
+          <script src={`${process.env.basePath}/vendors/jquery-3.5.1.min.js`} />
+          <script
+            src={`${process.env.basePath}/vendors/bootstrap.bundle.min.js`}
+          />
+          <script
+            src={`${process.env.basePath}/vendors/froala_editor/js/froala_editor.pkgd.min.js`}
+          />
+          <script
+            src={`${process.env.basePath}/vendors/froala_editor/js/plugins.pkgd.min.js`}
+          />
           <NextScript />
         </body>
       </Html>

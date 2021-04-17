@@ -120,7 +120,7 @@ const Dashboard = (props) => {
   };
 
   React.useEffect(() => {
-    if (props.userLogin.role == "user") {
+    if (props.userLogin.myrole == "4") {
       setMenuList([
         {
           pathname: "/home",
@@ -133,7 +133,7 @@ const Dashboard = (props) => {
           icon: "fas fa-car",
         },
       ]);
-    } else if (props.userLogin.role == "admin") {
+    } else if (props.userLogin.myrole == "1") {
       setMenuList([
         {
           pathname: "/home",
