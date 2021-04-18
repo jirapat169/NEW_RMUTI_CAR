@@ -150,6 +150,37 @@ const Dashboard = (props) => {
           title: "พนักงานขับยานพาหนะ",
           icon: "fas fa-address-card",
         },
+        {
+          pathname: "/admin/requestcar",
+          title: "ตรวจสอบการขอใช้",
+          icon: "fas fa-check-square",
+        },
+      ]);
+    } else if (props.userLogin.myrole == "2") {
+      setMenuList([
+        {
+          pathname: "/home",
+          title: "หน้าหลัก",
+          icon: "fas fa-home",
+        },
+        {
+          pathname: "/sol1/requestcar",
+          title: "ตรวจสอบการขอใช้",
+          icon: "fas fa-check-square",
+        },
+      ]);
+    } else if (props.userLogin.myrole == "3") {
+      setMenuList([
+        {
+          pathname: "/home",
+          title: "หน้าหลัก",
+          icon: "fas fa-home",
+        },
+        {
+          pathname: "/sol2/requestcar",
+          title: "ตรวจสอบการขอใช้",
+          icon: "fas fa-check-square",
+        },
       ]);
     }
 

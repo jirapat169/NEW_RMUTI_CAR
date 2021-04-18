@@ -1,19 +1,45 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
+import axios from "axios";
 
 const FormCar = (props) => {
   // console.log("props -> ", props.detailCar);
   const { control, handleSubmit, reset } = useForm(props.detailCar);
   const [defaultValue, setDefaultValue] = React.useState(props.detailCar);
+  const [driverImg, setDriverImage] = React.useState("");
 
   const onSubmit = (data) => {
-    console.log(data);
+    let tmp = {
+      ...data,
+      insertStatus: props.onInsertCar,
+      img: driverImg,
+      myrole: "5",
+      password: data.phone_number,
+      position: "พนักงานขับยานพาหนะ",
+    };
+    console.log(tmp);
+
+    axios
+      .post(`${props.env.api_url}user/registermanual`, JSON.stringify(tmp))
+      .then((value) => {
+        console.log(value.data);
+        if (value.data.success) {
+          props.getDriver();
+          window.$(`#formCarModal`).modal("hide");
+        } else {
+          alert("ชื่อผู้ใช้งาน หรือ หมายเลขบัตรประชาชน ถูกใช้งานแล้ว");
+        }
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
   };
 
   React.useEffect(() => {
     setDefaultValue(props.detailCar);
     reset(props.detailCar);
+    setDriverImage(props.detailCar.img);
   }, [props.detailCar]);
 
   return (
@@ -26,7 +52,7 @@ const FormCar = (props) => {
         aria-hidden="true"
       >
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-          <div className="modal-dialog">
+          <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="formCarModalLabel">
@@ -42,19 +68,179 @@ const FormCar = (props) => {
                 </button>
               </div>
               <div className="modal-body">
-                <Controller
-                  render={({ field, value, onChange }) => (
-                    <TextField
-                      {...field}
-                      label="Standard"
-                      onChange={onChange}
-                      value={value}
+                <div className="row">
+                  <div className="col-lg-6">
+                    {(() => {
+                      if (`${driverImg}`.length > 0) {
+                        return (
+                          <div
+                            className="text-center"
+                            style={{ overflow: "auto" }}
+                          >
+                            <img src={driverImg} width={"200px"} />
+                          </div>
+                        );
+                      }
+                    })()}
+
+                    <div className="text-center mt-3 mb-2">
+                      <input
+                        type="file"
+                        id="carImgSelect"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          e.preventDefault();
+                          let tmp = [...e.target.files];
+                          e.target.value = "";
+
+                          const toBase64 = (file) =>
+                            new Promise((resolve, reject) => {
+                              const reader = new FileReader();
+                              reader.readAsDataURL(file);
+                              reader.onload = () => resolve(reader.result);
+                              reader.onerror = (error) => reject(error);
+                            });
+
+                          let img = await toBase64(tmp[0]);
+
+                          setDriverImage(img);
+                        }}
+                        style={{ display: "none" }}
+                      />
+
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => {
+                          document.getElementById("carImgSelect").click();
+                        }}
+                      >
+                        เลือกรูปภาพ
+                      </button>
+                    </div>
+
+                    <Controller
+                      control={control}
+                      name="username"
+                      defaultValue={defaultValue.username}
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="ชื่อผู้ใช้งาน"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                          disabled={!props.onInsertCar}
+                        />
+                      )}
                     />
-                  )}
-                  control={control}
-                  name="select"
-                  defaultValue={defaultValue.select}
-                />
+
+                    <Controller
+                      control={control}
+                      name="prename"
+                      defaultValue={defaultValue.prename}
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="คำนำหน้า"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                    />
+
+                    <Controller
+                      control={control}
+                      name="firstname"
+                      defaultValue={defaultValue.firstname}
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="ชื่อจริง"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                    />
+
+                    <Controller
+                      control={control}
+                      name="lastname"
+                      defaultValue={defaultValue.lastname}
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="นามสกุล"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="col-lg-6">
+                    <Controller
+                      control={control}
+                      name="email"
+                      defaultValue={defaultValue.email}
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="อีเมล์"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                    />
+
+                    <Controller
+                      control={control}
+                      name="personal_id"
+                      defaultValue={defaultValue.personal_id}
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="หมายเลขประจำตัวประชาชน"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                    />
+
+                    <Controller
+                      control={control}
+                      name="phone_number"
+                      defaultValue={defaultValue.phone_number}
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="หมายเลขโทรศัพท์"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
               </div>
               <div className="modal-footer">
                 <button
@@ -62,10 +248,10 @@ const FormCar = (props) => {
                   className="btn btn-secondary"
                   data-dismiss="modal"
                 >
-                  Close
+                  ปิด
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Save changes
+                  บันทึก
                 </button>
               </div>
             </div>

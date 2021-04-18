@@ -33,3 +33,7 @@ body {
 .modal-backdrop.show {
   display: none !important;
 }
+
+.MuiPopover-root {
+  z-index: 22000 !important;
+}

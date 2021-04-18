@@ -4,21 +4,27 @@ import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 
 const FormCar = (props) => {
-  // console.log("props -> ", props.detailCar);
+  // console.log("props -> ", props.detailCar.img);
   const { control, handleSubmit, reset } = useForm(props.detailCar);
   const [defaultValue, setDefaultValue] = React.useState(props.detailCar);
-  const [carImg, setCarImage] = React.useState(null);
+  const [carImg, setCarImage] = React.useState("");
 
   const onSubmit = (data) => {
     let tmp = {
       ...data,
-      ...{ img: carImg, id: "", insertStatus: props.onInsertCar },
+      ...{
+        img: carImg,
+        id: props.detailCar.id,
+        insertStatus: props.onInsertCar,
+      },
     };
 
     axios
       .post(`${props.env.api_url}carstock/request`, JSON.stringify(tmp))
       .then((value) => {
         console.log(value.data);
+        props.getCar();
+        window.$(`#formCarModal`).modal("hide");
       })
       .catch((reason) => {
         console.log(reason);
@@ -27,6 +33,7 @@ const FormCar = (props) => {
 
   React.useEffect(() => {
     setDefaultValue(props.detailCar);
+    setCarImage(props.detailCar.img);
     reset(props.detailCar);
   }, [props.detailCar]);
 
@@ -59,7 +66,7 @@ const FormCar = (props) => {
                 <div className="row">
                   <div className="col-lg-6 mb-3">
                     {(() => {
-                      if (carImg) {
+                      if (`${carImg}`.length > 0) {
                         return (
                           <div
                             className="text-center"
@@ -226,6 +233,24 @@ const FormCar = (props) => {
                       name="year_buy"
                       defaultValue={defaultValue.year_buy}
                     />
+
+                    <Controller
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="ขนาดที่นั่ง"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                          type="number"
+                        />
+                      )}
+                      control={control}
+                      name="seat_size"
+                      defaultValue={defaultValue.seat_size}
+                    />
                   </div>
                 </div>
               </div>
@@ -235,10 +260,10 @@ const FormCar = (props) => {
                   className="btn btn-secondary"
                   data-dismiss="modal"
                 >
-                  Close
+                  ปิด
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Save changes
+                  บันทึก
                 </button>
               </div>
             </div>

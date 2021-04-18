@@ -7,7 +7,7 @@ const Guard = (props) => {
   const router = useRouter();
 
   React.useEffect(() => {
-    console.log(router.pathname);
+    // console.log(router.pathname);
     setLoading(true);
   }, []);
 

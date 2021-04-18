@@ -4,18 +4,30 @@ import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 
 const FormRequest = (props) => {
-  //  console.log("props -> ", props.defaultValue);
+  // console.log("props -> ", props);
+  const lsST = props.onInsertRequest
+    ? ""
+    : `${props.defaultValue.list_student}`.split(",");
+
+  const lsTA = props.onInsertRequest
+    ? ""
+    : `${props.defaultValue.list_teacher}`.split(",");
+
   const { control, handleSubmit, reset } = useForm(props.defaultValue);
   const [defaultValue, setDefaultValue] = React.useState(props.defaultValue);
 
-  const [listTeacher, setListTeacher] = React.useState([]);
-  const [listStudent, setListStudent] = React.useState([]);
-  const [counterTeacher, setCounterTeacher] = React.useState(0);
-  const [counterStudent, setCounterStudent] = React.useState(0);
+  const [listTeacher, setListTeacher] = React.useState(
+    props.onInsertRequest ? [] : lsTA.map((e, i) => i)
+  );
+  const [listStudent, setListStudent] = React.useState(
+    props.onInsertRequest ? [] : lsST.map((e, i) => i)
+  );
+  const [counterTeacher, setCounterTeacher] = React.useState(lsTA.length);
+  const [counterStudent, setCounterStudent] = React.useState(lsST.length);
 
   const onSubmit = (data) => {
     let tmp = {
-      id: "",
+      id: props.onInsertRequest ? "" : props.defaultValue.id,
       insertStatus: props.onInsertRequest,
       list_student: data.list_student ? [...data.list_student].join() : "",
       list_teacher: data.list_teacher ? [...data.list_teacher].join() : "",
@@ -26,7 +38,9 @@ const FormRequest = (props) => {
     axios
       .post(`${props.env.api_url}requestcar/request`, JSON.stringify(data))
       .then((val) => {
-        console.log(val.data);
+        // console.log(val.data);
+        props.getRequest();
+        window.$(`#formCarModal`).modal("hide");
       })
       .catch((reason) => {
         console.log(reason);
@@ -37,7 +51,19 @@ const FormRequest = (props) => {
 
   React.useEffect(() => {
     setDefaultValue(props.defaultValue);
-    reset(props.defaultValue);
+    setListTeacher(props.onInsertRequest ? [] : lsTA.map((e, i) => i));
+    setListStudent(props.onInsertRequest ? [] : lsST.map((e, i) => i));
+    setCounterTeacher(lsTA.length);
+    setCounterStudent(lsST.length);
+    reset({
+      ...props.defaultValue,
+      list_student: props.onInsertRequest
+        ? ""
+        : `${props.defaultValue.list_student}`.split(","),
+      list_teacher: props.onInsertRequest
+        ? ""
+        : `${props.defaultValue.list_teacher}`.split(","),
+    });
   }, [props.defaultValue]);
 
   return (
@@ -345,10 +371,10 @@ const FormRequest = (props) => {
                   className="btn btn-secondary"
                   data-dismiss="modal"
                 >
-                  Close
+                  ปิด
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Save changes
+                  บันทึก
                 </button>
               </div>
             </div>
