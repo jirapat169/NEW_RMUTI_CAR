@@ -2,26 +2,63 @@ import React from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Dashboard from "../../components/Dashboard";
+import axios from "axios";
 
 const localizer = momentLocalizer(moment);
 
 const Home = (props) => {
+  // console.log(moment().toDate());
+  const [events, setEvent] = React.useState([]);
+
+  const getEvent = () => {
+    axios
+      .post(`${props.env.api_url}requestcar/getRequest`)
+      .then((val) => {
+        // console.log(val.data);
+        if (val.data.result.rowCount > 0) {
+          let eventsData = [...val.data.result.result].filter(
+            (e) => e.mystep == "1" || e.mystep == "2" || e.mystep == "3"
+          );
+
+          eventsData = eventsData.map((e) => {
+            return {
+              start: new Date(e.date_start),
+              end: new Date(e.date_end),
+              title: e.reason,
+              data: { ...e },
+            };
+          });
+
+          setEvent(eventsData);
+        } else {
+          setEvent([]);
+        }
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
+  };
+
+  React.useEffect(() => {
+    getEvent();
+  }, []);
+
   return (
     <Dashboard {...props}>
       <Calendar
         localizer={localizer}
         events={[
-          {
-            start: moment().toDate(),
-            end: moment().add(1, "days").toDate(),
-            title: "Event 1",
-          },
-
-          {
-            start: moment().add(5, "days").toDate(),
-            end: moment().add(8, "days").toDate(),
-            title: "Event 2",
-          },
+          ...events,
+          // {
+          //   start: moment().toDate(),
+          //   end: moment().add(1, "days").toDate(),
+          //   title: "Event 1",
+          // },
+          // {
+          //   start: moment().add(5, "days").toDate(),
+          //   end: moment().add(8, "days").toDate(),
+          //   title: "Event 2",
+          // },
         ]}
         startAccessor="start"
         endAccessor="end"

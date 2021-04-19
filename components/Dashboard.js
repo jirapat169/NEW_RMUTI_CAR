@@ -132,6 +132,11 @@ const Dashboard = (props) => {
           title: "ขอใช้ยานพาหนะ",
           icon: "fas fa-car",
         },
+        {
+          pathname: "/profile",
+          title: "ข้อมูลส่วนตัว",
+          icon: "fas fa-id-badge",
+        },
       ]);
     } else if (props.userLogin.myrole == "1") {
       setMenuList([
@@ -141,9 +146,14 @@ const Dashboard = (props) => {
           icon: "fas fa-home",
         },
         {
+          pathname: "/user/request",
+          title: "ขอใช้ยานพาหนะ",
+          icon: "fas fa-car",
+        },
+        {
           pathname: "/admin/carmanage",
           title: "ยานพาหนะ",
-          icon: "fas fa-car",
+          icon: "fas fa-luggage-cart",
         },
         {
           pathname: "/admin/drivermanage",
@@ -154,6 +164,11 @@ const Dashboard = (props) => {
           pathname: "/admin/requestcar",
           title: "ตรวจสอบการขอใช้",
           icon: "fas fa-check-square",
+        },
+        {
+          pathname: "/profile",
+          title: "ข้อมูลส่วนตัว",
+          icon: "fas fa-id-badge",
         },
       ]);
     } else if (props.userLogin.myrole == "2") {
@@ -168,6 +183,11 @@ const Dashboard = (props) => {
           title: "ตรวจสอบการขอใช้",
           icon: "fas fa-check-square",
         },
+        {
+          pathname: "/profile",
+          title: "ข้อมูลส่วนตัว",
+          icon: "fas fa-id-badge",
+        },
       ]);
     } else if (props.userLogin.myrole == "3") {
       setMenuList([
@@ -180,6 +200,11 @@ const Dashboard = (props) => {
           pathname: "/sol2/requestcar",
           title: "ตรวจสอบการขอใช้",
           icon: "fas fa-check-square",
+        },
+        {
+          pathname: "/profile",
+          title: "ข้อมูลส่วนตัว",
+          icon: "fas fa-id-badge",
         },
       ]);
     }

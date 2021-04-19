@@ -94,7 +94,19 @@ const Admin = (props) => {
                   <td style={{ verticalAlign: "middle" }}>{e.reason} </td>
                   <td style={{ verticalAlign: "middle" }}>{e.location} </td>
                   <td style={{ verticalAlign: "middle" }}>
-                    {e.mystep == "0" ? "รอการตรวจสอบจากเจ้าหน้าที่" : e.mystep}{" "}
+                    {e.mystep == "0"
+                      ? "รอการตรวจสอบจากเจ้าหน้าที่"
+                      : e.mystep == "5"
+                      ? "ยกเลิกการจอง"
+                      : e.mystep == "1"
+                      ? "รอการอนุมัติจากผู้อำนวยการกองกลาง"
+                      : e.mystep == "2"
+                      ? "รอการอนุมัติจากผู้มีอำนาจสั่งใช้ยานพาหนะ"
+                      : e.mystep == "3"
+                      ? "ผ่านอนุมัติ"
+                      : e.mystep == "4"
+                      ? "ส่งคืนยานพาหนะสำเร็จ"
+                      : e.mystep}{" "}
                   </td>
                   <td style={{ verticalAlign: "middle" }}>
                     <button
@@ -102,6 +114,9 @@ const Admin = (props) => {
                       className="btn btn-warning btn-sm mr-2"
                       data-toggle="modal"
                       data-target="#formCarModal"
+                      disabled={
+                        e.mystep == "3" || e.mystep == "4" || e.mystep == "5"
+                      }
                       onClick={() => {
                         setRequest(false);
                         setDetail({ ...e });
@@ -129,7 +144,9 @@ const Admin = (props) => {
                             });
                         }
                       }}
-                      disabled={e.mystep != "0"}
+                      disabled={
+                        e.mystep == "3" || e.mystep == "4" || e.mystep == "5"
+                      }
                     >
                       <i className="fas fa-trash-alt"></i>
                     </button>

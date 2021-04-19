@@ -2,7 +2,7 @@ const path = require("path");
 const withSass = require("@zeit/next-sass");
 const withCSS = require("@zeit/next-css");
 
-const basePath = "";
+const basePath = "/project/rmuti_car";
 
 module.exports = withCSS(
   withSass({

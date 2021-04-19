@@ -1,33 +1,29 @@
 import React from "react";
 import { useRouter } from "next/router";
+import Dashboard from "../../components/Dashboard";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
-import Link from "next/link";
 
-const Register = (props) => {
+const Profile = (props) => {
   const router = useRouter();
-  const { control, handleSubmit, reset } = useForm();
+  const { control, handleSubmit, reset } = useForm(props.userLogin);
 
   const onSubmit = (data) => {
-    if (data.password !== data.c_password) {
-      alert("รหัสผ่านไม่ตรงกัน");
-      return;
-    }
-
     let tmp = {
+      ...props.userLogin,
       ...data,
-      insertStatus: true,
-      myrole: "4",
+      insertStatus: false,
+      myrole: props.userLogin.myrole,
     };
-    console.log(tmp);
+    // console.log(tmp);
 
     axios
       .post(`${props.env.api_url}user/registermanual`, JSON.stringify(tmp))
       .then((value) => {
         console.log(value.data);
         if (value.data.success) {
-          router.replace("/signin");
+          props.patchUserLogin(tmp);
           alert("บันทึกข้อมูลสำเร็จ");
         } else {
           alert("หมายเลขประจำตัวประชาชนหรืออีเมล์ถูกใช้งานแล้ว");
@@ -38,14 +34,17 @@ const Register = (props) => {
       });
   };
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    reset(props.userLogin);
+    // router.replace("/home");
+  }, []);
 
   return (
-    <div className="container">
+    <Dashboard {...props}>
       <div className="box-padding">
         <div className="row">
           <div className="col-9 mb-3">
-            <h2>สมัครสมาชิก</h2>
+            <h2>จัดการข้อมูลส่วนตัว</h2>
           </div>
           <div className="col-3 mb-3">
             <div className="text-right"></div>
@@ -55,10 +54,56 @@ const Register = (props) => {
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <div className="row">
             <div className="col-lg-6">
+              {/* {(() => {
+              if (`${driverImg}`.length > 0) {
+                return (
+                  <div className="text-center" style={{ overflow: "auto" }}>
+                    <img src={driverImg} width={"200px"} />
+                  </div>
+                );
+              }
+            })()}
+
+            <div className="text-center mt-3 mb-2">
+              <input
+                type="file"
+                id="carImgSelect"
+                accept="image/*"
+                onChange={async (e) => {
+                  e.preventDefault();
+                  let tmp = [...e.target.files];
+                  e.target.value = "";
+
+                  const toBase64 = (file) =>
+                    new Promise((resolve, reject) => {
+                      const reader = new FileReader();
+                      reader.readAsDataURL(file);
+                      reader.onload = () => resolve(reader.result);
+                      reader.onerror = (error) => reject(error);
+                    });
+
+                  let img = await toBase64(tmp[0]);
+
+                  setDriverImage(img);
+                }}
+                style={{ display: "none" }}
+              />
+
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => {
+                  document.getElementById("carImgSelect").click();
+                }}
+              >
+                เลือกรูปภาพ
+              </button>
+            </div> */}
+
               <Controller
                 control={control}
                 name="username"
-                defaultValue={""}
+                defaultValue={props.userLogin.username}
                 render={({ field, value, onChange }) => (
                   <TextField
                     {...field}
@@ -68,6 +113,7 @@ const Register = (props) => {
                     margin="normal"
                     required
                     fullWidth
+                    disabled={true}
                   />
                 )}
               />
@@ -75,7 +121,7 @@ const Register = (props) => {
               <Controller
                 control={control}
                 name="prename"
-                defaultValue={""}
+                defaultValue={props.userLogin.prename}
                 render={({ field, value, onChange }) => (
                   <TextField
                     {...field}
@@ -92,7 +138,7 @@ const Register = (props) => {
               <Controller
                 control={control}
                 name="firstname"
-                defaultValue={""}
+                defaultValue={props.userLogin.firstname}
                 render={({ field, value, onChange }) => (
                   <TextField
                     {...field}
@@ -109,7 +155,7 @@ const Register = (props) => {
               <Controller
                 control={control}
                 name="lastname"
-                defaultValue={""}
+                defaultValue={props.userLogin.lastname}
                 render={({ field, value, onChange }) => (
                   <TextField
                     {...field}
@@ -122,30 +168,12 @@ const Register = (props) => {
                   />
                 )}
               />
-
-              <Controller
-                control={control}
-                name="password"
-                defaultValue={""}
-                render={({ field, value, onChange }) => (
-                  <TextField
-                    {...field}
-                    label="รหัสผ่าน"
-                    onChange={onChange}
-                    value={value}
-                    margin="normal"
-                    type={"password"}
-                    required
-                    fullWidth
-                  />
-                )}
-              />
             </div>
             <div className="col-lg-6">
               <Controller
                 control={control}
                 name="email"
-                defaultValue={""}
+                defaultValue={props.userLogin.email}
                 render={({ field, value, onChange }) => (
                   <TextField
                     {...field}
@@ -162,7 +190,7 @@ const Register = (props) => {
               <Controller
                 control={control}
                 name="personal_id"
-                defaultValue={""}
+                defaultValue={props.userLogin.personal_id}
                 render={({ field, value, onChange }) => (
                   <TextField
                     {...field}
@@ -179,7 +207,7 @@ const Register = (props) => {
               <Controller
                 control={control}
                 name="phone_number"
-                defaultValue={""}
+                defaultValue={props.userLogin.phone_number}
                 render={({ field, value, onChange }) => (
                   <TextField
                     {...field}
@@ -196,7 +224,7 @@ const Register = (props) => {
               <Controller
                 control={control}
                 name="position"
-                defaultValue={""}
+                defaultValue={props.userLogin.position}
                 render={({ field, value, onChange }) => (
                   <TextField
                     {...field}
@@ -209,42 +237,18 @@ const Register = (props) => {
                   />
                 )}
               />
-
-              <Controller
-                control={control}
-                name="c_password"
-                defaultValue={""}
-                render={({ field, value, onChange }) => (
-                  <TextField
-                    {...field}
-                    label="ยืนยันรหัสผ่าน"
-                    onChange={onChange}
-                    value={value}
-                    margin="normal"
-                    type={"password"}
-                    required
-                    fullWidth
-                  />
-                )}
-              />
             </div>
           </div>
 
           <div className="mt-3 text-center">
-            <button type="submit" className="btn btn-primary mr-2">
-              สมัครสมาชิก
+            <button type="submit" className="btn btn-primary ">
+              บันทึก
             </button>
-
-            <Link href={"/signin"}>
-              <button type="button" className="btn btn-link ml-2">
-                เข้าสู่ระบบ
-              </button>
-            </Link>
           </div>
         </form>
       </div>
-    </div>
+    </Dashboard>
   );
 };
 
-export default Register;
+export default Profile;
