@@ -151,6 +151,11 @@ const Dashboard = (props) => {
           icon: "fas fa-car",
         },
         {
+          pathname: "/admin/usermanage",
+          title: "จัดการสิทธิ์การใช้งาน",
+          icon: "fas fa-users-cog",
+        },
+        {
           pathname: "/admin/carmanage",
           title: "ยานพาหนะ",
           icon: "fas fa-luggage-cart",
