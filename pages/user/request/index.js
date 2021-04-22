@@ -16,6 +16,8 @@ const defaultRequest = {
   car_end: "",
   timestamp: "",
   username: "",
+  doc1: "",
+  doc2: "",
 };
 
 const Admin = (props) => {

@@ -7,23 +7,32 @@ const FormRequest = (props) => {
   // console.log("props -> ", props);
   const lsST = props.onInsertRequest
     ? ""
-    : `${props.defaultValue.list_student}`.split(",");
+    : `${props.defaultValue.list_student}`.length > 0
+    ? `${props.defaultValue.list_student}`.split(",")
+    : [];
 
   const lsTA = props.onInsertRequest
     ? ""
-    : `${props.defaultValue.list_teacher}`.split(",");
+    : `${props.defaultValue.list_teacher}`.length > 0
+    ? `${props.defaultValue.list_teacher}`.split(",")
+    : [];
+
+  console.log(lsST);
 
   const { control, handleSubmit, reset } = useForm(props.defaultValue);
   const [defaultValue, setDefaultValue] = React.useState(props.defaultValue);
 
   const [listTeacher, setListTeacher] = React.useState(
-    props.onInsertRequest ? [] : lsTA.map((e, i) => i)
+    props.onInsertRequest ? [] : lsTA.length > 0 ? lsTA.map((e, i) => i) : []
   );
   const [listStudent, setListStudent] = React.useState(
-    props.onInsertRequest ? [] : lsST.map((e, i) => i)
+    props.onInsertRequest ? [] : lsST.length > 0 ? lsST.map((e, i) => i) : []
   );
+
   const [counterTeacher, setCounterTeacher] = React.useState(lsTA.length);
   const [counterStudent, setCounterStudent] = React.useState(lsST.length);
+  const [doc1, setDoc1] = React.useState(props.defaultValue.doc1);
+  const [doc2, setDoc2] = React.useState(props.defaultValue.doc2);
 
   const onSubmit = (data) => {
     let tmp = {
@@ -31,6 +40,8 @@ const FormRequest = (props) => {
       insertStatus: props.onInsertRequest,
       list_student: data.list_student ? [...data.list_student].join() : "",
       list_teacher: data.list_teacher ? [...data.list_teacher].join() : "",
+      doc1: doc1,
+      doc2: doc2,
       username: props.userLogin.username,
     };
     data = { ...data, ...tmp };
@@ -45,8 +56,6 @@ const FormRequest = (props) => {
       .catch((reason) => {
         console.log(reason);
       });
-
-    console.log(data);
   };
 
   React.useEffect(() => {
@@ -55,6 +64,8 @@ const FormRequest = (props) => {
     setListStudent(props.onInsertRequest ? [] : lsST.map((e, i) => i));
     setCounterTeacher(lsTA.length);
     setCounterStudent(lsST.length);
+    setDoc1(props.defaultValue.doc1);
+    setDoc2(props.defaultValue.doc2);
     reset({
       ...props.defaultValue,
       list_student: props.onInsertRequest
@@ -80,7 +91,7 @@ const FormRequest = (props) => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="formCarModalLabel">
-                  Modal title
+                  ข้อมูล
                 </h5>
                 <button
                   type="button"
@@ -362,6 +373,129 @@ const FormRequest = (props) => {
                         })}
                       </tbody>
                     </table>
+
+                    <div className="mt-3">
+                      <input
+                        type="file"
+                        id="doc1"
+                        accept="application/pdf"
+                        onChange={async (e) => {
+                          e.preventDefault();
+                          let tmp = [...e.target.files];
+                          e.target.value = "";
+
+                          const toBase64 = (file) =>
+                            new Promise((resolve, reject) => {
+                              const reader = new FileReader();
+                              reader.readAsDataURL(file);
+                              reader.onload = () => resolve(reader.result);
+                              reader.onerror = (error) => reject(error);
+                            });
+
+                          let img = await toBase64(tmp[0]);
+
+                          setDoc1(img);
+                        }}
+                        style={{ display: "none" }}
+                      />
+
+                      <input
+                        type="file"
+                        id="doc2"
+                        accept="application/pdf"
+                        onChange={async (e) => {
+                          e.preventDefault();
+                          let tmp = [...e.target.files];
+                          e.target.value = "";
+
+                          const toBase64 = (file) =>
+                            new Promise((resolve, reject) => {
+                              const reader = new FileReader();
+                              reader.readAsDataURL(file);
+                              reader.onload = () => resolve(reader.result);
+                              reader.onerror = (error) => reject(error);
+                            });
+
+                          let img = await toBase64(tmp[0]);
+
+                          setDoc2(img);
+                        }}
+                        style={{ display: "none" }}
+                      />
+
+                      <table className="table table-sm table-borderless">
+                        <thead>
+                          <tr>
+                            <th scope="col" style={{ width: "50%" }}>
+                              เอกสาร
+                            </th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td style={{ verticalAlign: "middle" }}>
+                              {(() => {
+                                if (`${doc1}`.length > 0) {
+                                  return (
+                                    <a
+                                      href={doc1}
+                                      download="เอกสารอนุมัติไปราชการ.pdf"
+                                    >
+                                      <i className="fas fa-file-powerpoint"></i>{" "}
+                                      เอกสารอนุมัติไปราชการ
+                                    </a>
+                                  );
+                                } else {
+                                  return "ยังไม่มีเอกสาร";
+                                }
+                              })()}
+                            </td>
+                            <td>
+                              <button
+                                type="button"
+                                className="btn btn-primary btn-sm"
+                                onClick={() => {
+                                  document.getElementById("doc1").click();
+                                }}
+                              >
+                                เลือกเอกสารอนุมัติไปราชการ
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style={{ verticalAlign: "middle" }}>
+                              {(() => {
+                                if (`${doc2}`.length > 0) {
+                                  return (
+                                    <a
+                                      href={doc2}
+                                      download="เอกสารอนุญาติให้ใช้ยานพาหนะ.pdf"
+                                    >
+                                      <i className="fas fa-file-powerpoint"></i>{" "}
+                                      เอกสารอนุญาติให้ใช้ยานพาหนะ
+                                    </a>
+                                  );
+                                } else {
+                                  return "ยังไม่มีเอกสาร";
+                                }
+                              })()}
+                            </td>
+                            <td>
+                              <button
+                                type="button"
+                                className="btn btn-primary btn-sm"
+                                onClick={() => {
+                                  document.getElementById("doc2").click();
+                                }}
+                              >
+                                เลือกเอกสารอนุญาติให้ใช้ยานพาหนะ
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>

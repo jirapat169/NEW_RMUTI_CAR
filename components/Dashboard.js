@@ -167,7 +167,7 @@ const Dashboard = (props) => {
         },
         {
           pathname: "/admin/usermanage",
-          title: "จัดการข้อมูลผู้ใช้",
+          title: "ข้อมูลผู้ใช้ในระบบ",
           icon: "fas fa-users-cog",
         },
         {
