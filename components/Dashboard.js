@@ -151,9 +151,9 @@ const Dashboard = (props) => {
           icon: "fas fa-car",
         },
         {
-          pathname: "/admin/usermanage",
-          title: "จัดการสิทธิ์การใช้งาน",
-          icon: "fas fa-users-cog",
+          pathname: "/admin/requestcar",
+          title: "ตรวจสอบการขอใช้",
+          icon: "fas fa-check-square",
         },
         {
           pathname: "/admin/carmanage",
@@ -166,9 +166,9 @@ const Dashboard = (props) => {
           icon: "fas fa-address-card",
         },
         {
-          pathname: "/admin/requestcar",
-          title: "ตรวจสอบการขอใช้",
-          icon: "fas fa-check-square",
+          pathname: "/admin/usermanage",
+          title: "จัดการข้อมูลผู้ใช้",
+          icon: "fas fa-users-cog",
         },
         {
           pathname: "/profile",
@@ -274,7 +274,8 @@ const Dashboard = (props) => {
               noWrap
               className={classes.title}
             >
-              Dashboard
+              ระบบการจองยานพาหนะสำหรับมหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน
+              วิทยาเขตนครราชสีมา
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -308,7 +309,7 @@ const Dashboard = (props) => {
                       props.tabSidenav ? "link-theme" : "link-theme text-center"
                     }
                   >
-                    <i className={element.icon}></i>
+                    <i className={element.icon} style={{ width: "20px" }}></i>
                     {props.tabSidenav && (
                       <span className="ml-3">{element.title}</span>
                     )}
@@ -325,7 +326,10 @@ const Dashboard = (props) => {
                 window.location.reload();
               }}
             >
-              <i className={"fas fa-sign-out-alt"}></i>
+              <i
+                className={"fas fa-sign-out-alt"}
+                style={{ width: "20px" }}
+              ></i>
               {props.tabSidenav && <span className="ml-3">{"ออกจากระบบ"}</span>}
             </div>
           </div>

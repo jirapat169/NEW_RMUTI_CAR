@@ -5,6 +5,14 @@ import Dashboard from "../../components/Dashboard";
 import axios from "axios";
 
 const localizer = momentLocalizer(moment);
+const colorList = [
+  "#FF5733",
+  "#FFAC33",
+  "#33FF7A",
+  "#33D7FF",
+  "#F033FF",
+  "#FF3383",
+];
 
 const Home = (props) => {
   // console.log(moment().toDate());
@@ -26,6 +34,8 @@ const Home = (props) => {
               end: new Date(e.date_end),
               title: e.reason,
               data: { ...e },
+              color:
+                colorList[Math.floor(Math.random() * colorList.length - 1)],
             };
           });
 
@@ -65,6 +75,12 @@ const Home = (props) => {
         onSelectEvent={(e) => {
           console.log(e);
         }}
+        eventPropGetter={(event) => ({
+          style: {
+            backgroundColor: event.color,
+            color: "black",
+          },
+        })}
         style={{ height: 500 }}
       />
     </Dashboard>

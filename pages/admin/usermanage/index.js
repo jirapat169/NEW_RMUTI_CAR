@@ -2,6 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import Dashboard from "../../../components/Dashboard";
 import axios from "axios";
+import FormCar from "./formCar";
 
 const userKey = [
   {
@@ -25,18 +26,38 @@ const userKey = [
     text: "ผู้ใช้งาน",
   },
 ];
+const defaultDriver = {
+  username: "",
+  prename: "",
+  firstname: "",
+  lastname: "",
+  email: "",
+  img: "",
+  myrole: "",
+  password: "",
+  personal_id: "",
+  phone_number: "",
+  position: "",
+};
 
 const User = (props) => {
   const router = useRouter();
   const [roleSelect, setRoleSelect] = React.useState("");
   const [users, setUsers] = React.useState([]);
+  const [listUsers, setListUsers] = React.useState([]);
+  const [detailCar, setDetailCar] = React.useState(defaultDriver);
+
+  const onChangeRole = (role) => {
+    setUsers(listUsers.filter((e) => `${e.myrole}` == `${role}`));
+  };
 
   const getUsers = () => {
     axios
       .post(`${props.env.api_url}user/get`)
-      .then((val) => {
+      .then(async (val) => {
         if (val.data.result.rowCount > 0) {
-          setUsers([...val.data.result.result]);
+          await setListUsers([...val.data.result.result]);
+          onChangeRole(roleSelect);
         } else {
           setUsers([]);
         }
@@ -44,10 +65,6 @@ const User = (props) => {
       .catch((reason) => {
         console.log(reason);
       });
-  };
-
-  const onChangeRole = (role) => {
-    console.log(role);
   };
 
   React.useEffect(() => {
@@ -60,7 +77,7 @@ const User = (props) => {
       <div className="box-padding">
         <div className="row">
           <div className="col-9 mb-3">
-            <h2>รายการขอใช้ยานพาหนะ</h2>
+            <h2>รายการข้อมูลผู้ใช้ในระบบ</h2>
           </div>
           <div className="col-3 mb-3">
             <div className="text-right">
@@ -84,7 +101,60 @@ const User = (props) => {
             </div>
           </div>
         </div>
+
+        <table className="table table-sm table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">ชื่อผู้ใช้งาน</th>
+              <th scope="col">ชื่อ - สกุล</th>
+              <th scope="col">ตำแหน่ง</th>
+              <th scope="col">อีเมล์</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((e, i) => {
+              return (
+                <tr key={i}>
+                  <td>{e.username}</td>
+                  <td>
+                    {e.prename}
+                    {e.firstname} {e.lastname}
+                  </td>
+                  <td>{e.position}</td>
+                  <td>{e.email}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn-warning btn-sm mr-2"
+                      data-toggle="modal"
+                      data-target="#formCarModal"
+                      onClick={() => {
+                        setDetailCar(e);
+                      }}
+                    >
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    {/* <button
+                      type="button"
+                      className="btn btn-danger btn-sm ml-2"
+                    >
+                      <i className="fas fa-trash-alt"></i>
+                    </button> */}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
+
+      <FormCar
+        {...props}
+        onInsertCar={false}
+        detailCar={detailCar}
+        getDriver={getUsers}
+      ></FormCar>
     </Dashboard>
   );
 };
