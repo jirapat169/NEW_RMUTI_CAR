@@ -166,6 +166,11 @@ const Dashboard = (props) => {
           icon: "fas fa-address-card",
         },
         {
+          pathname: "/rolemanage",
+          title: "จัดการผู้อนุมัติแทน",
+          icon: "fas fa-user-tag",
+        },
+        {
           pathname: "/admin/usermanage",
           title: "ข้อมูลผู้ใช้ในระบบ",
           icon: "fas fa-users-cog",
@@ -189,6 +194,11 @@ const Dashboard = (props) => {
           icon: "fas fa-check-square",
         },
         {
+          pathname: "/rolemanage",
+          title: "จัดการผู้อนุมัติแทน",
+          icon: "fas fa-user-tag",
+        },
+        {
           pathname: "/profile",
           title: "ข้อมูลส่วนตัว",
           icon: "fas fa-id-badge",
@@ -205,6 +215,11 @@ const Dashboard = (props) => {
           pathname: "/sol2/requestcar",
           title: "ตรวจสอบการขอใช้",
           icon: "fas fa-check-square",
+        },
+        {
+          pathname: "/rolemanage",
+          title: "จัดการผู้อนุมัติแทน",
+          icon: "fas fa-user-tag",
         },
         {
           pathname: "/profile",
