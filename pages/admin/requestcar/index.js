@@ -15,6 +15,7 @@ const Admin = (props) => {
   const [request, setListRequest] = React.useState([]);
   const [selectRequest, setSelectRequest] = React.useState({});
   const [listCD, setListCD] = React.useState({ car: [], driver: [] });
+  const [viewDetail, setViewDetail] = React.useState(null);
 
   const getRequest = () => {
     axios
@@ -35,6 +36,9 @@ const Admin = (props) => {
   React.useEffect(() => {
     // router.replace("/home");
     getRequest();
+    $("#exampleViewDetailModal").on("hide.bs.modal", (event) => {
+      setViewDetail(null);
+    });
   }, []);
 
   const onSubmit = (data) => {
@@ -109,7 +113,19 @@ const Admin = (props) => {
                   <td style={{ verticalAlign: "middle" }}>
                     <button
                       type="button"
-                      className="btn btn-warning btn-sm mr-2"
+                      className="btn btn-primary mr-2 btn-sm"
+                      data-toggle="modal"
+                      data-target="#exampleViewDetailModal"
+                      onClick={() => {
+                        setViewDetail(e);
+                      }}
+                    >
+                      <i className="fas fa-search-plus"></i>
+                    </button>
+
+                    <button
+                      type="button"
+                      className="btn btn-warning btn-sm ml-2 mr-2"
                       data-toggle="modal"
                       data-target="#exampleModal"
                       disabled={e.mystep != "0"}
@@ -279,6 +295,42 @@ const Admin = (props) => {
             </div>
           </div>
         </form>
+      </div>
+
+      <div
+        className="modal fade"
+        id="exampleViewDetailModal"
+        tabindex="-1"
+        aria-labelledby="exampleViewDetailModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleViewDetailModalLabel">
+                รายละเอียดการขอใช้ยานพาหนะ
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">{JSON.stringify(viewDetail)}</div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </Dashboard>
   );

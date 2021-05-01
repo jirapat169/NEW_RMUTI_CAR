@@ -15,7 +15,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const drawerWidth = 240;
+const drawerWidth = 270;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -332,6 +332,115 @@ const Dashboard = (props) => {
                 </ActiveLink>
               );
             })}
+
+            {(() => {
+              if (`${props.userLogin.role}`.indexOf("1") != -1) {
+                return (
+                  <Link href={`/admin/requestcar`}>
+                    <div
+                      className={
+                        props.tabSidenav
+                          ? "link-theme"
+                          : "link-theme text-center"
+                      }
+                    >
+                      <i
+                        className={"fas fa-check-square"}
+                        style={{ width: "20px" }}
+                      ></i>
+                      {props.tabSidenav && (
+                        <>
+                          <span className="ml-3">{"ตรวจสอบการขอใช้"}</span>
+                          <span
+                            style={{
+                              display: "block",
+                              textAlign: "right",
+                              color: "#DC3545",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {"(แทนเจ้าหน้าที่)"}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </Link>
+                );
+              }
+            })()}
+
+            {(() => {
+              if (`${props.userLogin.role}`.indexOf("2") != -1) {
+                return (
+                  <Link href={`/sol1/requestcar`}>
+                    <div
+                      className={
+                        props.tabSidenav
+                          ? "link-theme"
+                          : "link-theme text-center"
+                      }
+                    >
+                      <i
+                        className={"fas fa-check-square"}
+                        style={{ width: "20px" }}
+                      ></i>
+                      {props.tabSidenav && (
+                        <>
+                          <span className="ml-3">{"ตรวจสอบการขอใช้"}</span>
+                          <span
+                            style={{
+                              display: "block",
+                              textAlign: "right",
+                              color: "#DC3545",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {"(แทนผู้อำนวยการกองกลาง)"}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </Link>
+                );
+              }
+            })()}
+
+            {(() => {
+              if (`${props.userLogin.role}`.indexOf("3") != -1) {
+                return (
+                  <Link href={`/sol2/requestcar`}>
+                    <div
+                      className={
+                        props.tabSidenav
+                          ? "link-theme"
+                          : "link-theme text-center"
+                      }
+                    >
+                      <i
+                        className={"fas fa-check-square"}
+                        style={{ width: "20px" }}
+                      ></i>
+                      {props.tabSidenav && (
+                        <>
+                          <span className="ml-3">{"ตรวจสอบการขอใช้"}</span>
+                          <span
+                            style={{
+                              display: "block",
+                              textAlign: "right",
+                              color: "#DC3545",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {"(แทนผู้มีอำนาจสั่งใช้ยานพาหนะ)"}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </Link>
+                );
+              }
+            })()}
+
             <div
               className={
                 props.tabSidenav ? "link-theme" : "link-theme text-center"
@@ -370,6 +479,10 @@ const Dashboard = (props) => {
             font-size: 18px;
           }
           span {
+            font-size: 16px;
+          }
+
+          .divText {
             font-size: 16px;
           }
         }
