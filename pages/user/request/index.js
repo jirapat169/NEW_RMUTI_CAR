@@ -18,6 +18,7 @@ const defaultRequest = {
   username: "",
   doc1: "",
   doc2: "",
+  count_people: "",
 };
 
 const Admin = (props) => {

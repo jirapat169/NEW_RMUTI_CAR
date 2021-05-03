@@ -128,7 +128,6 @@ const Admin = (props) => {
                       className="btn btn-warning btn-sm ml-2 mr-2"
                       data-toggle="modal"
                       data-target="#exampleModal"
-                      disabled={e.mystep != "0"}
                       onClick={() => {
                         setSelectRequest(e);
                         axios
@@ -153,7 +152,7 @@ const Admin = (props) => {
                           });
                       }}
                     >
-                      พิจารณาการขอใช้
+                      เลือกรถและคนขับ
                     </button>
 
                     <button
@@ -222,10 +221,7 @@ const Admin = (props) => {
                 </button>
               </div>
               <div className="modal-body">
-                จำนวนผู้โดยสาร{" "}
-                {`${selectRequest.list_student}`.split(",").length +
-                  `${selectRequest.list_teacher}`.split(",").length}{" "}
-                คน
+                จำนวนผู้โดยสาร{` ${selectRequest.count_people} `}คน
                 <Controller
                   control={control}
                   name="car_detail_id_car"
@@ -242,13 +238,19 @@ const Admin = (props) => {
                       fullWidth
                     >
                       <MenuItem value={""}>--- โปรดเลือก ---</MenuItem>
-                      {listCD.car.map((e, i) => {
-                        return (
-                          <MenuItem value={e.id} key={i}>
-                            {e.brand} {e.model} จำนวน {e.seat_size} ที่นั่ง
-                          </MenuItem>
-                        );
-                      })}
+                      {listCD.car
+                        .filter(
+                          (ef) =>
+                            parseInt(ef.seat_size) >=
+                            parseInt(selectRequest.count_people)
+                        )
+                        .map((e, i) => {
+                          return (
+                            <MenuItem value={e.id} key={i}>
+                              {e.brand} {e.model} จำนวน {e.seat_size} ที่นั่ง
+                            </MenuItem>
+                          );
+                        })}
                     </TextField>
                   )}
                 />
@@ -300,7 +302,7 @@ const Admin = (props) => {
       <div
         className="modal fade"
         id="exampleViewDetailModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="exampleViewDetailModalLabel"
         aria-hidden="true"
       >

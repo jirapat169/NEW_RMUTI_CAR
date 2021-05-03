@@ -17,9 +17,9 @@ const FormRequest = (props) => {
     ? `${props.defaultValue.list_teacher}`.split(",")
     : [];
 
-  console.log(lsST);
-
-  const { control, handleSubmit, reset } = useForm(props.defaultValue);
+  const { control, handleSubmit, reset, setValue } = useForm(
+    props.defaultValue
+  );
   const [defaultValue, setDefaultValue] = React.useState(props.defaultValue);
 
   const [listTeacher, setListTeacher] = React.useState(
@@ -32,7 +32,13 @@ const FormRequest = (props) => {
   const [counterTeacher, setCounterTeacher] = React.useState(lsTA.length);
   const [counterStudent, setCounterStudent] = React.useState(lsST.length);
   const [doc1, setDoc1] = React.useState(props.defaultValue.doc1);
-  const [doc2, setDoc2] = React.useState(props.defaultValue.doc2);
+  const [doc2, setDoc2] = React.useState();
+
+  const [dateStart, setDateStart] = React.useState(
+    `${props.defaultValue.date_start}`.length > 0
+      ? props.defaultValue.date_start
+      : ""
+  );
 
   const onSubmit = (data) => {
     let tmp = {
@@ -66,6 +72,11 @@ const FormRequest = (props) => {
     setCounterStudent(lsST.length);
     setDoc1(props.defaultValue.doc1);
     setDoc2(props.defaultValue.doc2);
+    setDateStart(
+      `${props.defaultValue.date_start}`.length > 0
+        ? props.defaultValue.date_start
+        : ""
+    );
     reset({
       ...props.defaultValue,
       list_student: props.onInsertRequest
@@ -148,7 +159,11 @@ const FormRequest = (props) => {
                           }}
                           {...field}
                           label="วันที่ต้องการใช้ยานพาหนะ"
-                          onChange={onChange}
+                          onChange={(e) => {
+                            onChange(e);
+                            setDateStart(e.target.value);
+                            setValue("date_end", "");
+                          }}
                           value={value}
                           margin="normal"
                           required
@@ -168,12 +183,16 @@ const FormRequest = (props) => {
                             shrink: true,
                           }}
                           {...field}
+                          disabled={`${dateStart}`.length == 0}
                           label="วันที่นำยานพาหนะส่งคืน"
                           onChange={onChange}
                           value={value}
                           margin="normal"
                           required
                           fullWidth
+                          inputProps={{
+                            min: dateStart,
+                          }}
                         />
                       )}
                       control={control}
@@ -187,7 +206,9 @@ const FormRequest = (props) => {
                           id="time"
                           label="เวลานำยานพาหนะออกใช้งาน"
                           type="time"
-                          onChange={onChange}
+                          onChange={(e) => {
+                            onChange(e);
+                          }}
                           value={value}
                           InputLabelProps={{
                             shrink: true,
@@ -232,6 +253,23 @@ const FormRequest = (props) => {
                     />
                   </div>
                   <div className="col-lg-6 mb-3">
+                    <Controller
+                      render={({ field, value, onChange }) => (
+                        <TextField
+                          {...field}
+                          label="จำนวนผู้ร่วมเดินทาง"
+                          onChange={onChange}
+                          value={value}
+                          margin="normal"
+                          required
+                          fullWidth
+                        />
+                      )}
+                      control={control}
+                      name="count_people"
+                      defaultValue={defaultValue.count_people}
+                    />
+
                     <table className="table table-sm table-borderless">
                       <thead>
                         <tr>
