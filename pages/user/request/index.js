@@ -27,6 +27,7 @@ const Admin = (props) => {
   const [detail, setDetail] = React.useState({ ...defaultRequest });
 
   const [request, setListRequest] = React.useState([]);
+  const [viewDetail, setViewDetail] = React.useState(null);
 
   const getRequest = () => {
     axios
@@ -50,6 +51,9 @@ const Admin = (props) => {
   React.useEffect(() => {
     // router.replace("/home");
     getRequest();
+    $("#exampleViewDetailModal").on("hide.bs.modal", (event) => {
+      setViewDetail(null);
+    });
   }, []);
 
   return (
@@ -114,7 +118,19 @@ const Admin = (props) => {
                   <td style={{ verticalAlign: "middle" }}>
                     <button
                       type="button"
-                      className="btn btn-warning btn-sm mr-2"
+                      className="btn btn-primary mr-2 btn-sm"
+                      data-toggle="modal"
+                      data-target="#exampleViewDetailModal"
+                      onClick={() => {
+                        setViewDetail(e);
+                      }}
+                    >
+                      <i className="fas fa-search-plus"></i>
+                    </button>
+
+                    <button
+                      type="button"
+                      className="btn btn-warning btn-sm mr-2 ml-2"
                       data-toggle="modal"
                       data-target="#formCarModal"
                       disabled={
@@ -161,6 +177,136 @@ const Admin = (props) => {
         </table>
       </div>
 
+      <div
+        className="modal fade"
+        id="exampleViewDetailModal"
+        tabIndex="-1"
+        aria-labelledby="exampleViewDetailModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleViewDetailModalLabel">
+                รายละเอียดการขอใช้ยานพาหนะ
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              {(() => {
+                if (viewDetail) {
+                  return (
+                    <>
+                      <h6>
+                        <b>เหตุผลการขอใช้ยานพาหนะ : </b>
+                        {viewDetail.reason}
+                      </h6>
+                      <h6>
+                        <b>สถานที่ : </b>
+                        {viewDetail.location}
+                      </h6>
+                      <h6>
+                        <b>จำนวนผู้ร่วมเดินทาง : </b>
+                        {viewDetail.count_people}
+                      </h6>
+                      <h6>
+                        <b>อาจารย์/เจ้าหน้าที่ : </b>
+                        <ol style={{ margin: "unset" }}>
+                          {`${viewDetail.list_teacher}`
+                            .split(",")
+                            .map((e, i) => {
+                              return <li key={i}>{e}</li>;
+                            })}
+                        </ol>
+                      </h6>
+                      <h6>
+                        <b>นักศึกษา : </b>
+                        <ol style={{ margin: "unset" }}>
+                          {`${viewDetail.list_student}`
+                            .split(",")
+                            .map((e, i) => {
+                              return <li key={i}>{e}</li>;
+                            })}
+                        </ol>
+                      </h6>
+                      <h6>
+                        <b>ระหว่างวันที่ : </b>
+                        {viewDetail.date_start} ถึง {viewDetail.date_end}
+                      </h6>
+                      <h6>
+                        <b>เวลาออกรถ : </b>
+                        {viewDetail.car_start}
+                      </h6>
+                      <h6>
+                        <b>เวลากลับ : </b>
+                        {viewDetail.car_end}
+                      </h6>
+                      <div className={"mb-3 mt-3"}>
+                        {(() => {
+                          if (`${viewDetail.doc1}`.length > 0) {
+                            return (
+                              <a
+                                href={viewDetail.doc1}
+                                download="เอกสารอนุมัติไปราชการ.pdf"
+                              >
+                                <i className="fas fa-file-powerpoint"></i>{" "}
+                                เอกสารอนุมัติไปราชการ
+                              </a>
+                            );
+                          } else {
+                            return (
+                              <b className="text-danger">
+                                ไม่พบเอกสารอนุมัติไปราชการ
+                              </b>
+                            );
+                          }
+                        })()}
+                      </div>
+                      <div>
+                        {(() => {
+                          if (`${viewDetail.doc2}`.length > 0) {
+                            return (
+                              <a
+                                href={viewDetail.doc2}
+                                download="เอกสารอนุญาติให้ใช้ยานพาหนะ.pdf"
+                              >
+                                <i className="fas fa-file-powerpoint"></i>{" "}
+                                เอกสารอนุญาติให้ใช้ยานพาหนะ
+                              </a>
+                            );
+                          } else {
+                            return (
+                              <b className="text-danger">
+                                ไม่พบเอกสารอนุญาติให้ใช้ยานพาหนะ
+                              </b>
+                            );
+                          }
+                        })()}
+                      </div>
+                    </>
+                  );
+                }
+              })()}
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <FormRequest
         defaultValue={detail}
         onInsertRequest={stateRequest}
