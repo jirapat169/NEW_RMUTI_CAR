@@ -227,6 +227,19 @@ const Dashboard = (props) => {
           icon: "fas fa-id-badge",
         },
       ]);
+    } else if (props.userLogin.myrole == "5") {
+      setMenuList([
+        {
+          pathname: "/home",
+          title: "หน้าหลัก",
+          icon: "fas fa-home",
+        },
+        {
+          pathname: "/profile",
+          title: "ข้อมูลส่วนตัว",
+          icon: "fas fa-id-badge",
+        },
+      ]);
     }
 
     // setMenuList([

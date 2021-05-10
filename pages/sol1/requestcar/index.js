@@ -23,8 +23,11 @@ const Admin = (props) => {
       .then((val) => {
         console.log(val.data);
         if (val.data.result.rowCount > 0) {
+          // setListRequest(
+          //   [...val.data.result.result].filter((e) => e.mystep == "1")
+          // );
           setListRequest(
-            [...val.data.result.result].filter((e) => e.mystep == "1")
+            [...val.data.result.result].filter((e) => parseInt(e.mystep) >= 1)
           );
         } else {
           setListRequest([]);
@@ -128,7 +131,7 @@ const Admin = (props) => {
                     <button
                       type="button"
                       className="btn btn-warning btn-sm mr-2 ml-2"
-                      disabled={e.mystep == "2"}
+                      disabled={e.mystep != "1"}
                       onClick={() => {
                         let data = {
                           step: "2",

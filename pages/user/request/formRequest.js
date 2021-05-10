@@ -32,7 +32,7 @@ const FormRequest = (props) => {
   const [counterTeacher, setCounterTeacher] = React.useState(lsTA.length);
   const [counterStudent, setCounterStudent] = React.useState(lsST.length);
   const [doc1, setDoc1] = React.useState(props.defaultValue.doc1);
-  const [doc2, setDoc2] = React.useState();
+  const [doc2, setDoc2] = React.useState(props.defaultValue.doc2);
 
   const [dateStart, setDateStart] = React.useState(
     `${props.defaultValue.date_start}`.length > 0

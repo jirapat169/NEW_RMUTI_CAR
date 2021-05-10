@@ -8,6 +8,7 @@ import axios from "axios";
 const Profile = (props) => {
   const router = useRouter();
   const { control, handleSubmit, reset } = useForm(props.userLogin);
+  const [signature, setSignature] = React.useState(props.userLogin.signature);
 
   const onSubmit = (data) => {
     let tmp = {
@@ -15,8 +16,9 @@ const Profile = (props) => {
       ...data,
       insertStatus: false,
       myrole: props.userLogin.myrole,
+      signature: signature,
     };
-    // console.log(tmp);
+    console.log(tmp);
 
     axios
       .post(`${props.env.api_url}user/registermanual`, JSON.stringify(tmp))
@@ -36,8 +38,9 @@ const Profile = (props) => {
 
   React.useEffect(() => {
     reset(props.userLogin);
+    setSignature(props.userLogin.signature);
     // router.replace("/home");
-  }, []);
+  }, [props.userLogin]);
 
   return (
     <Dashboard {...props}>
@@ -239,6 +242,53 @@ const Profile = (props) => {
               />
             </div>
           </div>
+
+          <input
+            type="file"
+            id="signatureInput"
+            accept="image/*"
+            onChange={async (e) => {
+              e.preventDefault();
+              let tmp = [...e.target.files];
+              e.target.value = "";
+
+              const toBase64 = (file) =>
+                new Promise((resolve, reject) => {
+                  const reader = new FileReader();
+                  reader.readAsDataURL(file);
+                  reader.onload = () => resolve(reader.result);
+                  reader.onerror = (error) => reject(error);
+                });
+
+              let img = await toBase64(tmp[0]);
+
+              setSignature(img);
+            }}
+            style={{ display: "none" }}
+          />
+
+          {(() => {
+            if (`${signature}`.length > 0) {
+              return (
+                <div className="mt-3">
+                  <h5 className="mb-2">
+                    <b>รูปลายเซ็น</b>
+                  </h5>
+                  <img src={signature} width={"200px"} />
+                </div>
+              );
+            }
+          })()}
+
+          <button
+            type="button"
+            className="btn btn-primary btn-sm mt-3"
+            onClick={() => {
+              document.getElementById("signatureInput").click();
+            }}
+          >
+            เลือกลายเซ็น
+          </button>
 
           <div className="mt-3 text-center">
             <button type="submit" className="btn btn-primary ">
