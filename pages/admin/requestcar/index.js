@@ -6,6 +6,25 @@ import { useForm, Controller } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+pdfMake.fonts = {
+  THSarabun: {
+    normal: "THSarabun.ttf",
+    bold: "THSarabun Bold.ttf",
+    italics: "THSarabun Italic.ttf",
+    bolditalics: "THSarabun Bold Italic.ttf",
+  },
+  Roboto: {
+    normal: "Roboto-Regular.ttf",
+    bold: "Roboto-Medium.ttf",
+    italics: "Roboto-Italic.ttf",
+    bolditalics: "Roboto-MediumItalic.ttf",
+  },
+};
+pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfMake.vfs;
+
 const Admin = (props) => {
   const router = useRouter();
   const { control, handleSubmit, reset } = useForm();
@@ -416,6 +435,133 @@ const Admin = (props) => {
                   );
                 }
               })()}
+
+              <button
+                className="btn btn-success btn-sm mt-3"
+                onClick={() => {
+                  var docDefinition = {
+                    pageSize: "A4",
+                    pageOrientation: "portrait",
+                    content: [
+                      {
+                        text: "ใบขออนุญาตใช้รถราชการ",
+                        style: "header",
+                        alignment: "center",
+                        bold: true,
+                        fontSize: 18,
+                      },
+                      {
+                        text: `วันที่  10  เดือน  พฤษภาคม  พ.ศ.2564`,
+                        alignment: "right",
+                        margin: [0, 0, 0, 14],
+                      },
+                      {
+                        text: [{ text: "เรียน ", bold: true }, `   Mr.PDF   `],
+                        margin: [0, 0, 0, 14],
+                      },
+                      {
+                        text: [
+                          {
+                            text: ` `,
+                          },
+                          {
+                            text: `          ข้าพเจ้า`,
+                            bold: false,
+                          },
+                          {
+                            text: `   Mr.React Javascript   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `ตำแหน่ง`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ไม่บอก   `,
+                            style: "underline",
+                          },
+
+                          {
+                            text: `ขออนุญาตใช้รถราชการเพื่อ`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${viewDetail.reason}   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `สถานที่`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${viewDetail.location}   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `จำนวนผู้ร่วมเดินทาง`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${viewDetail.count_people}   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `อาจารย์/เจ้าหน้าที่`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${
+                              viewDetail.list_teacher.split(",").length
+                            }   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `ได้แก่`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${viewDetail.list_teacher.split(",")}   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `นักศึกษา`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${
+                              viewDetail.list_student.split(",").length
+                            }   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `ได้แก่`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${viewDetail.list_student.split(",")}   `,
+                            style: "underline",
+                          },
+                        ],
+                      },
+                    ],
+                    defaultStyle: {
+                      font: "THSarabun",
+                      fontSize: 16,
+                    },
+                    styles: {
+                      underline: {
+                        decoration: "underline",
+                        decorationStyle: "dotted",
+                        decorationColor: "gray",
+                        margin: 5,
+                      },
+                    },
+                  };
+                  pdfMake.createPdf(docDefinition).open();
+                }}
+              >
+                Export PDF
+              </button>
             </div>
             <div className="modal-footer">
               <button
