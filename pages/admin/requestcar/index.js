@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import Month from "../../../components/month";
 
 pdfMake.fonts = {
   THSarabun: {
@@ -24,6 +25,32 @@ pdfMake.fonts = {
   },
 };
 pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfMake.vfs;
+
+const getBase64ImageFromURL = (url) => {
+  return new Promise((resolve, reject) => {
+    var img = new Image();
+    img.setAttribute("crossOrigin", "anonymous");
+
+    img.onload = () => {
+      var canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      var dataURL = canvas.toDataURL("image/png");
+
+      resolve(dataURL);
+    };
+
+    img.onerror = (error) => {
+      reject(error);
+    };
+
+    img.src = url;
+  });
+};
 
 const Admin = (props) => {
   const router = useRouter();
@@ -438,7 +465,7 @@ const Admin = (props) => {
 
               <button
                 className="btn btn-success btn-sm mt-3"
-                onClick={() => {
+                onClick={async () => {
                   var docDefinition = {
                     pageSize: "A4",
                     pageOrientation: "portrait",
@@ -451,7 +478,19 @@ const Admin = (props) => {
                         fontSize: 18,
                       },
                       {
-                        text: `วันที่  10  เดือน  พฤษภาคม  พ.ศ.2564`,
+                        text: `วันที่  ${
+                          viewDetail.timestamp.split(" ")[0].split("-")[2]
+                        }  เดือน  ${
+                          Month()[
+                            parseInt(
+                              viewDetail.timestamp.split(" ")[0].split("-")[1]
+                            ) - 1
+                          ]
+                        }  พ.ศ.${
+                          parseInt(
+                            viewDetail.timestamp.split(" ")[0].split("-")[0]
+                          ) + 543
+                        }`,
                         alignment: "right",
                         margin: [0, 0, 0, 14],
                       },
@@ -469,7 +508,7 @@ const Admin = (props) => {
                             bold: false,
                           },
                           {
-                            text: `   Mr.React Javascript   `,
+                            text: `   ${viewDetail.user_request_name}   `,
                             style: "underline",
                           },
                           {
@@ -477,7 +516,7 @@ const Admin = (props) => {
                             bold: false,
                           },
                           {
-                            text: `   ไม่บอก   `,
+                            text: `   ${viewDetail.user_request_position}   `,
                             style: "underline",
                           },
 
@@ -541,7 +580,77 @@ const Admin = (props) => {
                             text: `   ${viewDetail.list_student.split(",")}   `,
                             style: "underline",
                           },
+                          {
+                            text: `ในวันที่`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${
+                              viewDetail.date_start.split("-")[2]
+                            }   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `เดือน`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${
+                              Month()[
+                                parseInt(viewDetail.date_start.split("-")[1]) -
+                                  1
+                              ]
+                            }   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `พ.ศ.`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${
+                              parseInt(viewDetail.date_start.split("-")[0]) +
+                              543
+                            }   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `ถึงวันที่`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${viewDetail.date_end.split("-")[2]}   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `เดือน`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${
+                              Month()[
+                                parseInt(viewDetail.date_end.split("-")[1]) - 1
+                              ]
+                            }   `,
+                            style: "underline",
+                          },
+                          {
+                            text: `พ.ศ.`,
+                            bold: false,
+                          },
+                          {
+                            text: `   ${
+                              parseInt(viewDetail.date_end.split("-")[0]) + 543
+                            }   `,
+                            style: "underline",
+                          },
                         ],
+                        margin: [0, 0, 0, 14],
+                      },
+                      {
+                        image: `signature_1`,
+                        width: 120,
+                        alignment: "right",
                       },
                     ],
                     defaultStyle: {
@@ -555,6 +664,9 @@ const Admin = (props) => {
                         decorationColor: "gray",
                         margin: 5,
                       },
+                    },
+                    images: {
+                      signature_1: `${viewDetail.step1_signature}`,
                     },
                   };
                   pdfMake.createPdf(docDefinition).open();
