@@ -5,6 +5,7 @@ import useLocalStorage from "../components/useLocalStorage";
 import { createMuiTheme } from "@material-ui/core/styles";
 import red from "@material-ui/core/colors/red";
 import Guard from "../guards/guard";
+import axios from "axios";
 
 const env = require(`../environments/${process.env.mode}`).default;
 const ThemeConfig = createMuiTheme({
@@ -35,6 +36,17 @@ function MyApp({ Component, pageProps }) {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
+
+    // axios
+    //   .get(`https://api.rmuti.ac.th/api/v3/car_req/me`, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Bearer: "demo14507acc",
+    //     },
+    //   })
+    //   .then((val) => {
+    //     console.log(val);
+    //   });
   }, []);
 
   return (

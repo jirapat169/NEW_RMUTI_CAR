@@ -186,7 +186,7 @@ const Admin = (props) => {
                     <button
                       type="button"
                       className="btn btn-danger btn-sm ml-2"
-                      disabled={e.mystep == "3"}
+                      disabled={parseInt(e.mystep) >= 3}
                       onClick={() => {
                         let data = {
                           step: "3",

@@ -110,6 +110,54 @@ const Admin = (props) => {
       });
   };
 
+  const onSubmitChangeCar = (data) => {
+    let tmp = {
+      car_detail_id_car: data.car_detail_id_car_update,
+      car_detail_user_driver: selectRequest.user_driver,
+      step: selectRequest.mystep,
+      insertStatus: false,
+      car_step_username: props.userLogin.username,
+      car_step_status: "1",
+      car_step_reason: "no",
+      id_request: selectRequest.id,
+    };
+
+    axios
+      .post(`${props.env.api_url}requestcar/managestep`, JSON.stringify(tmp))
+      .then((val) => {
+        console.log(val.data);
+        getRequest();
+        window.$(`#exampleModalCar`).modal("hide");
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
+  };
+
+  const onSubmitChangeDriver = (data) => {
+    let tmp = {
+      car_detail_id_car: selectRequest.id_car,
+      car_detail_user_driver: data.car_detail_user_driver_update,
+      step: selectRequest.mystep,
+      insertStatus: false,
+      car_step_username: props.userLogin.username,
+      car_step_status: "1",
+      car_step_reason: "no",
+      id_request: selectRequest.id,
+    };
+
+    axios
+      .post(`${props.env.api_url}requestcar/managestep`, JSON.stringify(tmp))
+      .then((val) => {
+        console.log(val.data);
+        getRequest();
+        window.$(`#exampleModalDriver`).modal("hide");
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
+  };
+
   return (
     <Dashboard {...props}>
       <div className="box-padding">
@@ -169,37 +217,114 @@ const Admin = (props) => {
                       <i className="fas fa-search-plus"></i>
                     </button>
 
-                    <button
-                      type="button"
-                      className="btn btn-warning btn-sm ml-2 mr-2"
-                      data-toggle="modal"
-                      data-target="#exampleModal"
-                      onClick={() => {
-                        setSelectRequest(e);
-                        axios
-                          .post(
-                            `${props.env.api_url}carstock/getUsableCarNDriver`,
-                            JSON.stringify({
-                              date_start: e.date_start,
-                              date_end: e.date_end,
-                            })
-                          )
-                          .then((val) => {
-                            console.log(val.data);
-                            setListCD({
-                              car: [...val.data.resultcar.result].filter(
-                                (e) => e.delete_at == null
-                              ),
-                              driver: val.data.resultdriver.result,
-                            });
-                          })
-                          .catch((reason) => {
-                            console.log(reason);
-                          });
-                      }}
-                    >
-                      เลือกรถและคนขับ
-                    </button>
+                    {(() => {
+                      if (parseInt(e.mystep) == 0) {
+                        return (
+                          <button
+                            type="button"
+                            className="btn btn-warning btn-sm ml-2 mr-2"
+                            data-toggle="modal"
+                            data-target="#exampleModal"
+                            disabled={e.mystep == "5"}
+                            onClick={() => {
+                              setSelectRequest(e);
+                              axios
+                                .post(
+                                  `${props.env.api_url}carstock/getUsableCarNDriver`,
+                                  JSON.stringify({
+                                    date_start: e.date_start,
+                                    date_end: e.date_end,
+                                  })
+                                )
+                                .then((val) => {
+                                  console.log(val.data);
+                                  setListCD({
+                                    car: [...val.data.resultcar.result].filter(
+                                      (e) => e.delete_at == null
+                                    ),
+                                    driver: val.data.resultdriver.result,
+                                  });
+                                })
+                                .catch((reason) => {
+                                  console.log(reason);
+                                });
+                            }}
+                          >
+                            เลือกรถและคนขับ
+                          </button>
+                        );
+                      } else {
+                        return (
+                          <>
+                            <button
+                              type="button"
+                              className="btn btn-warning btn-sm ml-2 mr-2"
+                              data-toggle="modal"
+                              data-target="#exampleModalDriver"
+                              disabled={e.mystep == "5"}
+                              onClick={() => {
+                                setSelectRequest(e);
+                                axios
+                                  .post(
+                                    `${props.env.api_url}carstock/getUsableCarNDriver`,
+                                    JSON.stringify({
+                                      date_start: e.date_start,
+                                      date_end: e.date_end,
+                                    })
+                                  )
+                                  .then((val) => {
+                                    console.log(val.data);
+                                    setListCD({
+                                      car: [
+                                        ...val.data.resultcar.result,
+                                      ].filter((e) => e.delete_at == null),
+                                      driver: val.data.resultdriver.result,
+                                    });
+                                  })
+                                  .catch((reason) => {
+                                    console.log(reason);
+                                  });
+                              }}
+                            >
+                              เปลี่ยนพนักกงาน
+                            </button>
+
+                            <button
+                              type="button"
+                              className="btn btn-warning btn-sm ml-2 mr-2"
+                              data-toggle="modal"
+                              data-target="#exampleModalCar"
+                              disabled={e.mystep == "5"}
+                              onClick={() => {
+                                setSelectRequest(e);
+                                axios
+                                  .post(
+                                    `${props.env.api_url}carstock/getUsableCarNDriver`,
+                                    JSON.stringify({
+                                      date_start: e.date_start,
+                                      date_end: e.date_end,
+                                    })
+                                  )
+                                  .then((val) => {
+                                    console.log(val.data);
+                                    setListCD({
+                                      car: [
+                                        ...val.data.resultcar.result,
+                                      ].filter((e) => e.delete_at == null),
+                                      driver: val.data.resultdriver.result,
+                                    });
+                                  })
+                                  .catch((reason) => {
+                                    console.log(reason);
+                                  });
+                              }}
+                            >
+                              เปลี่ยนยานพาหนะ
+                            </button>
+                          </>
+                        );
+                      }
+                    })()}
 
                     <button
                       type="button"
@@ -255,7 +380,7 @@ const Admin = (props) => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLabel">
-                  Modal title
+                  อนุมัติการขอใช้
                 </h5>
                 <button
                   type="button"
@@ -324,6 +449,152 @@ const Admin = (props) => {
                           </MenuItem>
                         );
                       })}
+                    </TextField>
+                  )}
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  ปิด
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  บันทึก
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      {/* <!-- Modal --> */}
+      <div
+        className="modal fade"
+        id="exampleModalDriver"
+        tabIndex="-1"
+        aria-labelledby="exampleModalDriverLabel"
+        aria-hidden="true"
+      >
+        <form onSubmit={handleSubmit(onSubmitChangeDriver)} autoComplete="off">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalDriverLabel">
+                  เปลี่ยนพนักกงานขับยานพาหนะ
+                </h5>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <Controller
+                  control={control}
+                  name="car_detail_user_driver_update"
+                  defaultValue={""}
+                  render={({ field, value, onChange }) => (
+                    <TextField
+                      {...field}
+                      label="รายชื่อคนขับที่ว่าง"
+                      value={value}
+                      select
+                      onChange={onChange}
+                      margin="normal"
+                      required
+                      fullWidth
+                    >
+                      <MenuItem value={""}>--- โปรดเลือก ---</MenuItem>
+                      {listCD.driver.map((e, i) => {
+                        return (
+                          <MenuItem value={e.username} key={i}>
+                            {e.prename}
+                            {e.firstname} {e.lastname}
+                          </MenuItem>
+                        );
+                      })}
+                    </TextField>
+                  )}
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  ปิด
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  บันทึก
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      {/* <!-- Modal --> */}
+      <div
+        className="modal fade"
+        id="exampleModalCar"
+        tabIndex="-1"
+        aria-labelledby="exampleModalCarLabel"
+        aria-hidden="true"
+      >
+        <form onSubmit={handleSubmit(onSubmitChangeCar)} autoComplete="off">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalCarLabel">
+                  เปลี่ยนยานพาหนะ
+                </h5>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                จำนวนผู้โดยสาร{` ${selectRequest.count_people} `}คน
+                <Controller
+                  control={control}
+                  name="car_detail_id_car_update"
+                  defaultValue={""}
+                  render={({ field, value, onChange }) => (
+                    <TextField
+                      {...field}
+                      label="รายการรถที่ว่าง"
+                      value={value}
+                      select
+                      onChange={onChange}
+                      margin="normal"
+                      required
+                      fullWidth
+                    >
+                      <MenuItem value={""}>--- โปรดเลือก ---</MenuItem>
+                      {listCD.car
+                        .filter(
+                          (ef) =>
+                            parseInt(ef.seat_size) >=
+                            parseInt(selectRequest.count_people)
+                        )
+                        .map((e, i) => {
+                          return (
+                            <MenuItem value={e.id} key={i}>
+                              {e.brand} {e.model} จำนวน {e.seat_size} ที่นั่ง
+                            </MenuItem>
+                          );
+                        })}
                     </TextField>
                   )}
                 />
