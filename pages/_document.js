@@ -60,6 +60,7 @@ export default class MyDocument extends Document {
         </Head>
         <body>
           <Main />
+          <script src={`${process.env.basePath}/initialMap.js`} />
           <script src={`${process.env.basePath}/vendors/jquery-3.5.1.min.js`} />
           <script
             src={`${process.env.basePath}/vendors/bootstrap.bundle.min.js`}
@@ -70,6 +71,10 @@ export default class MyDocument extends Document {
           <script
             src={`${process.env.basePath}/vendors/froala_editor/js/plugins.pkgd.min.js`}
           />
+          <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlZjv59KT7qCJyyVh9OBOJ9Ikw7Oq6d_Q&callback=initMap&libraries=places&v=weekly&language=th"
+            async
+          ></script>
           <NextScript />
         </body>
       </Html>

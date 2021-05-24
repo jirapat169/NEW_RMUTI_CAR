@@ -3,6 +3,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Dashboard from "../../components/Dashboard";
 import axios from "axios";
+import GGMap from "../../components/GGmap";
 
 const localizer = momentLocalizer(moment);
 const colorList = [
@@ -94,6 +95,8 @@ const Home = (props) => {
         })}
         style={{ height: 500 }}
       />
+
+      <GGMap {...props} />
     </Dashboard>
   );
 };

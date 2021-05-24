@@ -920,7 +920,7 @@ const Admin = (props) => {
                       },
                       {
                         image: `signature_1`,
-                        width: 120,
+                        width: 100,
                         alignment: "right",
                       },
                     ],
@@ -937,7 +937,27 @@ const Admin = (props) => {
                       },
                     },
                     images: {
-                      signature_1: `${viewDetail.step1_signature}`,
+                      signature_1: `${
+                        viewDetail.step1_signature
+                          ? `${viewDetail.step1_signature}`.length > 0
+                            ? viewDetail.step1_signature
+                            : props.env.imageWhite
+                          : props.env.imageWhite
+                      }`,
+                      signature_2: `${
+                        viewDetail.step2_signature
+                          ? `${viewDetail.step2_signature}`.length > 0
+                            ? viewDetail.step2_signature
+                            : props.env.imageWhite
+                          : props.env.imageWhite
+                      }`,
+                      signature_3: `${
+                        viewDetail.step3_signature
+                          ? `${viewDetail.step3_signature}`.length > 0
+                            ? viewDetail.step3_signature
+                            : props.env.imageWhite
+                          : props.env.imageWhite
+                      }`,
                     },
                   };
                   pdfMake.createPdf(docDefinition).open();
