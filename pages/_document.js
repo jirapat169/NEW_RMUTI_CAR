@@ -72,7 +72,7 @@ export default class MyDocument extends Document {
             src={`${process.env.basePath}/vendors/froala_editor/js/plugins.pkgd.min.js`}
           />
           <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlZjv59KT7qCJyyVh9OBOJ9Ikw7Oq6d_Q&callback=initMap&libraries=places&v=weekly&language=th"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDixhO7jPlXpq4mNSRfWWxfij45bclBkY&callback=initMap&libraries=places&v=weekly&language=th"
             async
           ></script>
           <NextScript />

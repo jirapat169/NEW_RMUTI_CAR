@@ -1,43 +1,37 @@
 import React from "react";
+import TextField from "@material-ui/core/TextField";
 
 class AutocompleteDirectionsHandler {
-  constructor(map) {
-    this.map = map;
+  constructor(props) {
+    this.setMapData = props.setMapData;
+    this.map = props.map;
     this.originPlaceId = "";
     this.destinationPlaceId = "";
-    this.travelMode = google.maps.TravelMode.DRIVING;
-    this.directionsService = new google.maps.DirectionsService();
-    this.directionsRenderer = new google.maps.DirectionsRenderer();
-    this.directionsRenderer.setMap(map);
+    this.directionsService = new window.google.maps.DirectionsService();
+    this.directionsRenderer = new window.google.maps.DirectionsRenderer();
+    this.directionsRenderer.setMap(props.map);
     const originInput = document.getElementById("origin-input");
     const destinationInput = document.getElementById("destination-input");
-    const originAutocomplete = new google.maps.places.Autocomplete(originInput);
-    // Specify just the place data fields that you need.
+    const originAutocomplete = new window.google.maps.places.Autocomplete(
+      originInput
+    );
     originAutocomplete.setFields(["place_id"]);
-    const destinationAutocomplete = new google.maps.places.Autocomplete(
+    const destinationAutocomplete = new window.google.maps.places.Autocomplete(
       destinationInput
     );
-    // Specify just the place data fields that you need.
     destinationAutocomplete.setFields(["place_id"]);
-
     this.setupPlaceChangedListener(originAutocomplete, "ORIG");
     this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(
-      destinationInput
-    );
   }
 
   setupPlaceChangedListener(autocomplete, mode) {
     autocomplete.bindTo("bounds", this.map);
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
-
       if (!place.place_id) {
-        window.alert("Please select an option from the dropdown list.");
+        window.alert("โปรดเลือกสถานที่จากรายการที่แสดง");
         return;
       }
-
       if (mode === "ORIG") {
         this.originPlaceId = place.place_id;
       } else {
@@ -46,8 +40,10 @@ class AutocompleteDirectionsHandler {
       this.route();
     });
   }
+
   route() {
     if (!this.originPlaceId || !this.destinationPlaceId) {
+      this.setMapData([]);
       return;
     }
     const me = this;
@@ -55,13 +51,15 @@ class AutocompleteDirectionsHandler {
       {
         origin: { placeId: this.originPlaceId },
         destination: { placeId: this.destinationPlaceId },
-        travelMode: this.travelMode,
+        travelMode: window.google.maps.TravelMode.DRIVING,
       },
       (response, status) => {
         if (status === "OK") {
           me.directionsRenderer.setDirections(response);
+          this.setMapData(response.routes);
         } else {
-          window.alert("Directions request failed due to " + status);
+          window.alert("ไม่มีเส้นทางทีท่านเลือก");
+          this.setMapData([]);
         }
       }
     );
@@ -69,6 +67,8 @@ class AutocompleteDirectionsHandler {
 }
 
 const GGMap = (props) => {
+  const [mapData, setMapData] = React.useState([]);
+
   React.useEffect(() => {
     let rmutiLocation = { lat: 14.988319611169972, lng: 102.11773235118517 };
     const map = new window.google.maps.Map(
@@ -80,37 +80,68 @@ const GGMap = (props) => {
       }
     );
 
-    // new google.maps.Marker({
-    //   position: rmutiLocation,
-    //   label: `A`,
-    //   animation: google.maps.Animation.DROP,
-    //   map: map,
-    // });
-
-    new AutocompleteDirectionsHandler(map);
-    // window.document.getElementById(`mapRender`).appendChild(mapDiv);
+    new AutocompleteDirectionsHandler({
+      map: map,
+      setMapData: (data) => {
+        setMapData(data);
+      },
+    });
   }, []);
 
+  React.useEffect(() => {
+    console.log(mapData);
+  }, [mapData]);
+
   return (
-    <>
-      <input
-        id="origin-input"
-        className="controls"
-        type="text"
-        placeholder="Enter an origin location"
-      />
+    <div style={{ padding: "15px" }}>
+      <div className="row">
+        <div className="col-md-8">
+          <div className="" id="mapRender" style={{ height: "600px" }}></div>
+        </div>
+        <div className="col-md-4">
+          <div>
+            <TextField
+              id="origin-input"
+              label="จุดเริ่มต้น"
+              multiline
+              rows={4}
+              defaultValue=""
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
 
-      <input
-        id="destination-input"
-        className="controls"
-        type="text"
-        placeholder="Enter a destination location"
-      />
+            <TextField
+              id="destination-input"
+              label="จุดสิ้นสุด"
+              multiline
+              rows={4}
+              defaultValue=""
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+          </div>
 
-      <div className="mt-3 mb-3" id="mapRender" style={{ height: "600px" }}>
-        Hello
+          {(() => {
+            if (mapData.length > 0) {
+              return (
+                <div className="mb-3">
+                  <h5>
+                    <b>ระยะทางประมาณ : </b>
+                    {mapData[0]["legs"][0]["distance"]["text"]}
+                  </h5>
+                  <h5>
+                    <b>เวลาในการเดินทาง : </b>
+                    {mapData[0]["legs"][0]["duration"]["text"]}
+                  </h5>
+                </div>
+              );
+            } else return <></>;
+          })()}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
