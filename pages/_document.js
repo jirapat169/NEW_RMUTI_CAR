@@ -72,6 +72,10 @@ export default class MyDocument extends Document {
             src={`${process.env.basePath}/vendors/froala_editor/js/plugins.pkgd.min.js`}
           />
           <script
+            src={`https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.js`}
+          />
+
+          <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDixhO7jPlXpq4mNSRfWWxfij45bclBkY&callback=initMap&libraries=places&v=weekly&language=th"
             async
           ></script>

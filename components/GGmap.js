@@ -93,55 +93,64 @@ const GGMap = (props) => {
   }, [mapData]);
 
   return (
-    <div style={{ padding: "15px" }}>
-      <div className="row">
-        <div className="col-md-8">
-          <div className="" id="mapRender" style={{ height: "600px" }}></div>
-        </div>
-        <div className="col-md-4">
-          <div>
-            <TextField
-              id="origin-input"
-              label="จุดเริ่มต้น"
-              multiline
-              rows={4}
-              defaultValue=""
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-
-            <TextField
-              id="destination-input"
-              label="จุดสิ้นสุด"
-              multiline
-              rows={4}
-              defaultValue=""
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
+    <>
+      <h5>คำนวนค่าใช้จ่าย</h5>
+      <div style={{ padding: "15px" }}>
+        <div className="row">
+          <div className="col-md-8">
+            <div className="" id="mapRender" style={{ height: "400px" }}></div>
           </div>
+          <div className="col-md-4">
+            <div>
+              <TextField
+                id="origin-input"
+                label="จุดเริ่มต้น"
+                multiline
+                rows={4}
+                defaultValue=""
+                variant="outlined"
+                fullWidth
+                margin="normal"
+              />
 
-          {(() => {
-            if (mapData.length > 0) {
-              return (
-                <div className="mb-3">
-                  <h5>
-                    <b>ระยะทางประมาณ : </b>
-                    {mapData[0]["legs"][0]["distance"]["text"]}
-                  </h5>
-                  <h5>
-                    <b>เวลาในการเดินทาง : </b>
-                    {mapData[0]["legs"][0]["duration"]["text"]}
-                  </h5>
-                </div>
-              );
-            } else return <></>;
-          })()}
+              <TextField
+                id="destination-input"
+                label="จุดสิ้นสุด"
+                multiline
+                rows={4}
+                defaultValue=""
+                variant="outlined"
+                fullWidth
+                margin="normal"
+              />
+            </div>
+
+            {(() => {
+              if (mapData.length > 0) {
+                return (
+                  <div className="mb-3">
+                    <h6>
+                      <b>ระยะทางประมาณ : </b>
+                      {mapData[0]["legs"][0]["distance"]["text"]}
+                    </h6>
+                    <h6>
+                      <b>เวลาในการเดินทาง : </b>
+                      {mapData[0]["legs"][0]["duration"]["text"]}
+                    </h6>
+                    <h6>
+                      <b>ค่าใช้จ่ายประมาณ : </b>
+                      {parseInt(mapData[0]["legs"][0]["distance"]["text"]) *
+                        4}{" "}
+                      บาท
+                    </h6>
+                  </div>
+                );
+              } else return <></>;
+            })()}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

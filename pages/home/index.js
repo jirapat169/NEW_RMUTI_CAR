@@ -95,8 +95,6 @@ const Home = (props) => {
         })}
         style={{ height: 500 }}
       />
-
-      <GGMap {...props} />
     </Dashboard>
   );
 };

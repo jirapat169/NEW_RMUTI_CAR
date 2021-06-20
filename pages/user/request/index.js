@@ -8,6 +8,7 @@ const defaultRequest = {
   id: "",
   reason: "",
   location: "",
+  in_korat: "",
   list_teacher: "",
   list_student: "",
   date_start: "",

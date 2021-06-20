@@ -9,6 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import Month from "../../../components/month";
+import GGMap from "../../../components/GGmap";
 
 pdfMake.fonts = {
   THSarabun: {
@@ -623,7 +624,7 @@ const Admin = (props) => {
         aria-labelledby="exampleViewDetailModalLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-xl">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleViewDetailModalLabel">
@@ -639,332 +640,355 @@ const Admin = (props) => {
               </button>
             </div>
             <div className="modal-body">
-              {(() => {
-                if (viewDetail) {
-                  return (
-                    <>
-                      <h6>
-                        <b>เหตุผลการขอใช้ยานพาหนะ : </b>
-                        {viewDetail.reason}
-                      </h6>
-                      <h6>
-                        <b>สถานที่ : </b>
-                        {viewDetail.location}
-                      </h6>
-                      <h6>
-                        <b>จำนวนผู้ร่วมเดินทาง : </b>
-                        {viewDetail.count_people}
-                      </h6>
-                      <h6>
-                        <b>อาจารย์/เจ้าหน้าที่ : </b>
-                        <ol style={{ margin: "unset" }}>
-                          {`${viewDetail.list_teacher}`
-                            .split(",")
-                            .map((e, i) => {
-                              return <li key={i}>{e}</li>;
-                            })}
-                        </ol>
-                      </h6>
-                      <h6>
-                        <b>นักศึกษา : </b>
-                        <ol style={{ margin: "unset" }}>
-                          {`${viewDetail.list_student}`
-                            .split(",")
-                            .map((e, i) => {
-                              return <li key={i}>{e}</li>;
-                            })}
-                        </ol>
-                      </h6>
-                      <h6>
-                        <b>ระหว่างวันที่ : </b>
-                        {viewDetail.date_start} ถึง {viewDetail.date_end}
-                      </h6>
-                      <h6>
-                        <b>เวลาออกรถ : </b>
-                        {viewDetail.car_start}
-                      </h6>
-                      <h6>
-                        <b>เวลากลับ : </b>
-                        {viewDetail.car_end}
-                      </h6>
-                      <div className={"mb-3 mt-3"}>
-                        {(() => {
-                          if (`${viewDetail.doc1}`.length > 0) {
-                            return (
-                              <a
-                                href={viewDetail.doc1}
-                                download="เอกสารอนุมัติไปราชการ.pdf"
-                              >
-                                <i className="fas fa-file-powerpoint"></i>{" "}
-                                เอกสารอนุมัติไปราชการ
-                              </a>
-                            );
-                          } else {
-                            return (
-                              <b className="text-danger">
-                                ไม่พบเอกสารอนุมัติไปราชการ
-                              </b>
-                            );
-                          }
-                        })()}
-                      </div>
-                      <div>
-                        {(() => {
-                          if (`${viewDetail.doc2}`.length > 0) {
-                            return (
-                              <a
-                                href={viewDetail.doc2}
-                                download="เอกสารอนุญาติให้ใช้ยานพาหนะ.pdf"
-                              >
-                                <i className="fas fa-file-powerpoint"></i>{" "}
-                                เอกสารอนุญาติให้ใช้ยานพาหนะ
-                              </a>
-                            );
-                          } else {
-                            return (
-                              <b className="text-danger">
-                                ไม่พบเอกสารอนุญาติให้ใช้ยานพาหนะ
-                              </b>
-                            );
-                          }
-                        })()}
-                      </div>
-                    </>
-                  );
-                }
-              })()}
+              <div className="row">
+                <div className="col-md-4 mb-3">
+                  {(() => {
+                    if (viewDetail) {
+                      return (
+                        <>
+                          <h6>
+                            <b>เหตุผลการขอใช้ยานพาหนะ : </b>
+                            {viewDetail.reason}
+                          </h6>
+                          <h6>
+                            <b>สถานที่ : </b>
+                            {viewDetail.location}
+                          </h6>
+                          <h6>
+                            <b>จำนวนผู้ร่วมเดินทาง : </b>
+                            {viewDetail.count_people}
+                          </h6>
+                          <h6>
+                            <b>อาจารย์/เจ้าหน้าที่ : </b>
+                            <ol style={{ margin: "unset" }}>
+                              {`${viewDetail.list_teacher}`
+                                .split(",")
+                                .map((e, i) => {
+                                  return <li key={i}>{e}</li>;
+                                })}
+                            </ol>
+                          </h6>
+                          <h6>
+                            <b>นักศึกษา : </b>
+                            <ol style={{ margin: "unset" }}>
+                              {`${viewDetail.list_student}`
+                                .split(",")
+                                .map((e, i) => {
+                                  return <li key={i}>{e}</li>;
+                                })}
+                            </ol>
+                          </h6>
+                          <h6>
+                            <b>ระหว่างวันที่ : </b>
+                            {viewDetail.date_start} ถึง {viewDetail.date_end}
+                          </h6>
+                          <h6>
+                            <b>เวลาออกรถ : </b>
+                            {viewDetail.car_start}
+                          </h6>
+                          <h6>
+                            <b>เวลากลับ : </b>
+                            {viewDetail.car_end}
+                          </h6>
+                          <div className={"mb-3 mt-3"}>
+                            {(() => {
+                              if (`${viewDetail.doc1}`.length > 0) {
+                                return (
+                                  <a
+                                    href={viewDetail.doc1}
+                                    download="เอกสารอนุมัติไปราชการ.pdf"
+                                  >
+                                    <i className="fas fa-file-powerpoint"></i>{" "}
+                                    เอกสารอนุมัติไปราชการ
+                                  </a>
+                                );
+                              } else {
+                                return (
+                                  <b className="text-danger">
+                                    ไม่พบเอกสารอนุมัติไปราชการ
+                                  </b>
+                                );
+                              }
+                            })()}
+                          </div>
+                          <div>
+                            {(() => {
+                              if (`${viewDetail.doc2}`.length > 0) {
+                                return (
+                                  <a
+                                    href={viewDetail.doc2}
+                                    download="เอกสารอนุญาติให้ใช้ยานพาหนะ.pdf"
+                                  >
+                                    <i className="fas fa-file-powerpoint"></i>{" "}
+                                    เอกสารอนุญาติให้ใช้ยานพาหนะ
+                                  </a>
+                                );
+                              } else {
+                                return (
+                                  <b className="text-danger">
+                                    ไม่พบเอกสารอนุญาติให้ใช้ยานพาหนะ
+                                  </b>
+                                );
+                              }
+                            })()}
+                          </div>
+                        </>
+                      );
+                    }
+                  })()}
 
-              <button
-                className="btn btn-success btn-sm mt-3"
-                onClick={async () => {
-                  var docDefinition = {
-                    pageSize: "A4",
-                    pageOrientation: "portrait",
-                    content: [
-                      {
-                        text: "ใบขออนุญาตใช้รถราชการ",
-                        style: "header",
-                        alignment: "center",
-                        bold: true,
-                        fontSize: 18,
-                      },
-                      {
-                        text: `วันที่  ${
-                          viewDetail.timestamp.split(" ")[0].split("-")[2]
-                        }  เดือน  ${
-                          Month()[
-                            parseInt(
-                              viewDetail.timestamp.split(" ")[0].split("-")[1]
-                            ) - 1
-                          ]
-                        }  พ.ศ.${
-                          parseInt(
-                            viewDetail.timestamp.split(" ")[0].split("-")[0]
-                          ) + 543
-                        }`,
-                        alignment: "right",
-                        margin: [0, 0, 0, 14],
-                      },
-                      {
-                        text: [{ text: "เรียน ", bold: true }, `   Mr.PDF   `],
-                        margin: [0, 0, 0, 14],
-                      },
-                      {
-                        text: [
+                  <button
+                    className="btn btn-success btn-sm mt-3"
+                    onClick={async () => {
+                      var docDefinition = {
+                        pageSize: "A4",
+                        pageOrientation: "portrait",
+                        content: [
                           {
-                            text: ` `,
+                            text: "ใบขออนุญาตใช้รถราชการ",
+                            style: "header",
+                            alignment: "center",
+                            bold: true,
+                            fontSize: 18,
                           },
                           {
-                            text: `          ข้าพเจ้า`,
-                            bold: false,
+                            text: `วันที่  ${
+                              viewDetail.timestamp.split(" ")[0].split("-")[2]
+                            }  เดือน  ${
+                              Month()[
+                                parseInt(
+                                  viewDetail.timestamp
+                                    .split(" ")[0]
+                                    .split("-")[1]
+                                ) - 1
+                              ]
+                            }  พ.ศ.${
+                              parseInt(
+                                viewDetail.timestamp.split(" ")[0].split("-")[0]
+                              ) + 543
+                            }`,
+                            alignment: "right",
+                            margin: [0, 0, 0, 14],
                           },
                           {
-                            text: `   ${viewDetail.user_request_name}   `,
-                            style: "underline",
+                            text: [
+                              { text: "เรียน ", bold: true },
+                              `   Mr.PDF   `,
+                            ],
+                            margin: [0, 0, 0, 14],
                           },
                           {
-                            text: `ตำแหน่ง`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${viewDetail.user_request_position}   `,
-                            style: "underline",
-                          },
+                            text: [
+                              {
+                                text: ` `,
+                              },
+                              {
+                                text: `          ข้าพเจ้า`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${viewDetail.user_request_name}   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `ตำแหน่ง`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${viewDetail.user_request_position}   `,
+                                style: "underline",
+                              },
 
-                          {
-                            text: `ขออนุญาตใช้รถราชการเพื่อ`,
-                            bold: false,
+                              {
+                                text: `ขออนุญาตใช้รถราชการเพื่อ`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${viewDetail.reason}   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `สถานที่`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${viewDetail.location}   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `จำนวนผู้ร่วมเดินทาง`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${viewDetail.count_people}   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `อาจารย์/เจ้าหน้าที่`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${
+                                  viewDetail.list_teacher.split(",").length
+                                }   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `ได้แก่`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${viewDetail.list_teacher.split(
+                                  ","
+                                )}   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `นักศึกษา`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${
+                                  viewDetail.list_student.split(",").length
+                                }   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `ได้แก่`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${viewDetail.list_student.split(
+                                  ","
+                                )}   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `ในวันที่`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${
+                                  viewDetail.date_start.split("-")[2]
+                                }   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `เดือน`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${
+                                  Month()[
+                                    parseInt(
+                                      viewDetail.date_start.split("-")[1]
+                                    ) - 1
+                                  ]
+                                }   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `พ.ศ.`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${
+                                  parseInt(
+                                    viewDetail.date_start.split("-")[0]
+                                  ) + 543
+                                }   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `ถึงวันที่`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${
+                                  viewDetail.date_end.split("-")[2]
+                                }   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `เดือน`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${
+                                  Month()[
+                                    parseInt(
+                                      viewDetail.date_end.split("-")[1]
+                                    ) - 1
+                                  ]
+                                }   `,
+                                style: "underline",
+                              },
+                              {
+                                text: `พ.ศ.`,
+                                bold: false,
+                              },
+                              {
+                                text: `   ${
+                                  parseInt(viewDetail.date_end.split("-")[0]) +
+                                  543
+                                }   `,
+                                style: "underline",
+                              },
+                            ],
+                            margin: [0, 0, 0, 14],
                           },
                           {
-                            text: `   ${viewDetail.reason}   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `สถานที่`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${viewDetail.location}   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `จำนวนผู้ร่วมเดินทาง`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${viewDetail.count_people}   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `อาจารย์/เจ้าหน้าที่`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${
-                              viewDetail.list_teacher.split(",").length
-                            }   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `ได้แก่`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${viewDetail.list_teacher.split(",")}   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `นักศึกษา`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${
-                              viewDetail.list_student.split(",").length
-                            }   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `ได้แก่`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${viewDetail.list_student.split(",")}   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `ในวันที่`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${
-                              viewDetail.date_start.split("-")[2]
-                            }   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `เดือน`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${
-                              Month()[
-                                parseInt(viewDetail.date_start.split("-")[1]) -
-                                  1
-                              ]
-                            }   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `พ.ศ.`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${
-                              parseInt(viewDetail.date_start.split("-")[0]) +
-                              543
-                            }   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `ถึงวันที่`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${viewDetail.date_end.split("-")[2]}   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `เดือน`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${
-                              Month()[
-                                parseInt(viewDetail.date_end.split("-")[1]) - 1
-                              ]
-                            }   `,
-                            style: "underline",
-                          },
-                          {
-                            text: `พ.ศ.`,
-                            bold: false,
-                          },
-                          {
-                            text: `   ${
-                              parseInt(viewDetail.date_end.split("-")[0]) + 543
-                            }   `,
-                            style: "underline",
+                            image: `signature_1`,
+                            width: 100,
+                            alignment: "right",
                           },
                         ],
-                        margin: [0, 0, 0, 14],
-                      },
-                      {
-                        image: `signature_1`,
-                        width: 100,
-                        alignment: "right",
-                      },
-                    ],
-                    defaultStyle: {
-                      font: "THSarabun",
-                      fontSize: 16,
-                    },
-                    styles: {
-                      underline: {
-                        decoration: "underline",
-                        decorationStyle: "dotted",
-                        decorationColor: "gray",
-                        margin: 5,
-                      },
-                    },
-                    images: {
-                      signature_1: `${
-                        viewDetail.step1_signature
-                          ? `${viewDetail.step1_signature}`.length > 0
-                            ? viewDetail.step1_signature
-                            : props.env.imageWhite
-                          : props.env.imageWhite
-                      }`,
-                      signature_2: `${
-                        viewDetail.step2_signature
-                          ? `${viewDetail.step2_signature}`.length > 0
-                            ? viewDetail.step2_signature
-                            : props.env.imageWhite
-                          : props.env.imageWhite
-                      }`,
-                      signature_3: `${
-                        viewDetail.step3_signature
-                          ? `${viewDetail.step3_signature}`.length > 0
-                            ? viewDetail.step3_signature
-                            : props.env.imageWhite
-                          : props.env.imageWhite
-                      }`,
-                    },
-                  };
-                  pdfMake.createPdf(docDefinition).open();
-                }}
-              >
-                Export PDF
-              </button>
+                        defaultStyle: {
+                          font: "THSarabun",
+                          fontSize: 16,
+                        },
+                        styles: {
+                          underline: {
+                            decoration: "underline",
+                            decorationStyle: "dotted",
+                            decorationColor: "gray",
+                            margin: 5,
+                          },
+                        },
+                        images: {
+                          signature_1: `${
+                            viewDetail.step1_signature
+                              ? `${viewDetail.step1_signature}`.length > 0
+                                ? viewDetail.step1_signature
+                                : props.env.imageWhite
+                              : props.env.imageWhite
+                          }`,
+                          signature_2: `${
+                            viewDetail.step2_signature
+                              ? `${viewDetail.step2_signature}`.length > 0
+                                ? viewDetail.step2_signature
+                                : props.env.imageWhite
+                              : props.env.imageWhite
+                          }`,
+                          signature_3: `${
+                            viewDetail.step3_signature
+                              ? `${viewDetail.step3_signature}`.length > 0
+                                ? viewDetail.step3_signature
+                                : props.env.imageWhite
+                              : props.env.imageWhite
+                          }`,
+                        },
+                      };
+                      pdfMake.createPdf(docDefinition).open();
+                    }}
+                  >
+                    Export PDF
+                  </button>
+                </div>
+                <div className="col-md-8 mb-3">
+                  <GGMap {...props} />
+                </div>
+              </div>
             </div>
             <div className="modal-footer">
               <button

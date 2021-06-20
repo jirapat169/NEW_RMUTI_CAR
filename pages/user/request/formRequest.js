@@ -270,6 +270,40 @@ const FormRequest = (props) => {
                       defaultValue={defaultValue.count_people}
                     />
 
+                    <div className="form-check mt-3">
+                      <Controller
+                        render={({ field, value, onChange }) => (
+                          <input
+                            {...field}
+                            className="form-check-input"
+                            type="checkbox"
+                            checked={defaultValue.in_korat == "true"}
+                            value={value}
+                            onChange={(e) => {
+                              e.target.value = `${e.target.checked}`;
+                              onChange(e);
+                              setDefaultValue((prev) => {
+                                return {
+                                  ...prev,
+                                  in_korat: `${e.target.checked}`,
+                                };
+                              });
+                            }}
+                          />
+                        )}
+                        control={control}
+                        name="in_korat"
+                        defaultValue={defaultValue.in_korat == "true"}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="defaultCheck1"
+                      >
+                        ใช้ในพื้นที่จังหวัดนครราชสีมา
+                      </label>
+                    </div>
+
                     <table className="table table-sm table-borderless">
                       <thead>
                         <tr>
