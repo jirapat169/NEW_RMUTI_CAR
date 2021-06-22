@@ -4,6 +4,7 @@ import axios from "axios";
 
 const Static = (props) => {
   const [chartData, steChartData] = React.useState(null);
+  const [eventsSelect, setEventsSelect] = React.useState(null);
 
   const getRequest = () => {
     axios
@@ -20,7 +21,7 @@ const Static = (props) => {
             dataset.push(`${e.data}`.split(",").length);
             data.push(
               `${e.data}`.split(",").map((e, i) => {
-                return `${e}`.split(" - ");
+                return `${e}`.split("--");
               })
             );
           });
@@ -56,7 +57,10 @@ const Static = (props) => {
         },
         options: {
           onClick: (...a) => {
-            console.log(chartData.data[a[1][0]["index"]]);
+            setEventsSelect(prve => {
+              if ([...a[1]].length > 0) return chartData.data[a[1][0]["index"]];
+              else return prve
+            })
           },
           scales: {
             y: {
@@ -74,13 +78,36 @@ const Static = (props) => {
 
   React.useEffect(() => {
     getRequest();
-    return () => {};
+    return () => { };
   }, []);
 
   return (
     <Dashboard {...props}>
       <div className="box-padding">
         <canvas id="myChart"></canvas>
+        {(() => {
+          if (eventsSelect) {
+            return <table className="table table-sm table-borderless">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">สถานที่</th>
+                  <th scope="col">ข้อมูลรถ</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...eventsSelect].map((e, i) => {
+                  return <tr key={i}>
+                    <td>{i + 1}</td>
+                    <td>{e[0]}</td>
+                    <td>{`${e[1]}`.replace(/!!/g, ', ')}</td>
+                  </tr>
+                })}
+
+              </tbody>
+            </table>
+          }
+        })()}
       </div>
 
       <style jsx>{`
