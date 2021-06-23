@@ -71,6 +71,7 @@ const Admin = (props) => {
         console.log(val.data);
         if (val.data.result.rowCount > 0) {
           setListRequest(val.data.result.result);
+          console.log(val.data.result.result)
         } else {
           setListRequest([]);
         }
@@ -194,16 +195,16 @@ const Admin = (props) => {
                     {e.mystep == "0"
                       ? "รอการตรวจสอบจากเจ้าหน้าที่"
                       : e.mystep == "5"
-                      ? "ยกเลิกการจอง"
-                      : e.mystep == "1"
-                      ? "รอการอนุมัติจากผู้อำนวยการกองกลาง"
-                      : e.mystep == "2"
-                      ? "รอการอนุมัติจากผู้มีอำนาจสั่งใช้ยานพาหนะ"
-                      : e.mystep == "3"
-                      ? "ผ่านอนุมัติ"
-                      : e.mystep == "4"
-                      ? "ส่งคืนยานพาหนะสำเร็จ"
-                      : e.mystep}{" "}
+                        ? "ยกเลิกการจอง"
+                        : e.mystep == "1"
+                          ? "รอการอนุมัติจากผู้อำนวยการกองกลาง"
+                          : e.mystep == "2"
+                            ? "รอการอนุมัติจากผู้มีอำนาจสั่งใช้ยานพาหนะ"
+                            : e.mystep == "3"
+                              ? "ผ่านอนุมัติ"
+                              : e.mystep == "4"
+                                ? "ส่งคืนยานพาหนะสำเร็จ"
+                                : e.mystep}{" "}
                   </td>
                   <td style={{ verticalAlign: "middle" }}>
                     <button
@@ -752,21 +753,18 @@ const Admin = (props) => {
                             fontSize: 18,
                           },
                           {
-                            text: `วันที่  ${
-                              viewDetail.timestamp.split(" ")[0].split("-")[2]
-                            }  เดือน  ${
-                              Month()[
-                                parseInt(
-                                  viewDetail.timestamp
-                                    .split(" ")[0]
-                                    .split("-")[1]
-                                ) - 1
-                              ]
-                            }  พ.ศ.${
+                            text: `วันที่  ${viewDetail.timestamp.split(" ")[0].split("-")[2]
+                              }  เดือน  ${Month()[
                               parseInt(
+                                viewDetail.timestamp
+                                  .split(" ")[0]
+                                  .split("-")[1]
+                              ) - 1
+                              ]
+                              }  พ.ศ.${parseInt(
                                 viewDetail.timestamp.split(" ")[0].split("-")[0]
                               ) + 543
-                            }`,
+                              }`,
                             alignment: "right",
                             margin: [0, 0, 0, 14],
                           },
@@ -828,9 +826,8 @@ const Admin = (props) => {
                                 bold: false,
                               },
                               {
-                                text: `   ${
-                                  viewDetail.list_teacher.split(",").length
-                                }   `,
+                                text: `   ${viewDetail.list_teacher.split(",").length
+                                  }   `,
                                 style: "underline",
                               },
                               {
@@ -848,9 +845,8 @@ const Admin = (props) => {
                                 bold: false,
                               },
                               {
-                                text: `   ${
-                                  viewDetail.list_student.split(",").length
-                                }   `,
+                                text: `   ${viewDetail.list_student.split(",").length
+                                  }   `,
                                 style: "underline",
                               },
                               {
@@ -868,9 +864,8 @@ const Admin = (props) => {
                                 bold: false,
                               },
                               {
-                                text: `   ${
-                                  viewDetail.date_start.split("-")[2]
-                                }   `,
+                                text: `   ${viewDetail.date_start.split("-")[2]
+                                  }   `,
                                 style: "underline",
                               },
                               {
@@ -878,13 +873,12 @@ const Admin = (props) => {
                                 bold: false,
                               },
                               {
-                                text: `   ${
-                                  Month()[
-                                    parseInt(
-                                      viewDetail.date_start.split("-")[1]
-                                    ) - 1
+                                text: `   ${Month()[
+                                  parseInt(
+                                    viewDetail.date_start.split("-")[1]
+                                  ) - 1
                                   ]
-                                }   `,
+                                  }   `,
                                 style: "underline",
                               },
                               {
@@ -892,11 +886,10 @@ const Admin = (props) => {
                                 bold: false,
                               },
                               {
-                                text: `   ${
-                                  parseInt(
-                                    viewDetail.date_start.split("-")[0]
-                                  ) + 543
-                                }   `,
+                                text: `   ${parseInt(
+                                  viewDetail.date_start.split("-")[0]
+                                ) + 543
+                                  }   `,
                                 style: "underline",
                               },
                               {
@@ -904,9 +897,8 @@ const Admin = (props) => {
                                 bold: false,
                               },
                               {
-                                text: `   ${
-                                  viewDetail.date_end.split("-")[2]
-                                }   `,
+                                text: `   ${viewDetail.date_end.split("-")[2]
+                                  }   `,
                                 style: "underline",
                               },
                               {
@@ -914,13 +906,12 @@ const Admin = (props) => {
                                 bold: false,
                               },
                               {
-                                text: `   ${
-                                  Month()[
-                                    parseInt(
-                                      viewDetail.date_end.split("-")[1]
-                                    ) - 1
+                                text: `   ${Month()[
+                                  parseInt(
+                                    viewDetail.date_end.split("-")[1]
+                                  ) - 1
                                   ]
-                                }   `,
+                                  }   `,
                                 style: "underline",
                               },
                               {
@@ -928,10 +919,9 @@ const Admin = (props) => {
                                 bold: false,
                               },
                               {
-                                text: `   ${
-                                  parseInt(viewDetail.date_end.split("-")[0]) +
+                                text: `   ${parseInt(viewDetail.date_end.split("-")[0]) +
                                   543
-                                }   `,
+                                  }   `,
                                 style: "underline",
                               },
                             ],
@@ -956,27 +946,24 @@ const Admin = (props) => {
                           },
                         },
                         images: {
-                          signature_1: `${
-                            viewDetail.step1_signature
+                          signature_1: `${viewDetail.step1_signature
                               ? `${viewDetail.step1_signature}`.length > 0
                                 ? viewDetail.step1_signature
                                 : props.env.imageWhite
                               : props.env.imageWhite
-                          }`,
-                          signature_2: `${
-                            viewDetail.step2_signature
+                            }`,
+                          signature_2: `${viewDetail.step2_signature
                               ? `${viewDetail.step2_signature}`.length > 0
                                 ? viewDetail.step2_signature
                                 : props.env.imageWhite
                               : props.env.imageWhite
-                          }`,
-                          signature_3: `${
-                            viewDetail.step3_signature
+                            }`,
+                          signature_3: `${viewDetail.step3_signature
                               ? `${viewDetail.step3_signature}`.length > 0
                                 ? viewDetail.step3_signature
                                 : props.env.imageWhite
                               : props.env.imageWhite
-                          }`,
+                            }`,
                         },
                       };
                       pdfMake.createPdf(docDefinition).open();
