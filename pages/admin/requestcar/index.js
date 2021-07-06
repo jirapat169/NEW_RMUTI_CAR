@@ -642,7 +642,7 @@ const Admin = (props) => {
             </div>
             <div className="modal-body">
               <div className="row">
-                <div className="col-md-4 mb-3">
+                <div className="col-md-6 mb-3">
                   {(() => {
                     if (viewDetail) {
                       return (
@@ -877,7 +877,7 @@ const Admin = (props) => {
                                   parseInt(
                                     viewDetail.date_start.split("-")[1]
                                   ) - 1
-                                  ]
+                                ]
                                   }   `,
                                 style: "underline",
                               },
@@ -910,7 +910,7 @@ const Admin = (props) => {
                                   parseInt(
                                     viewDetail.date_end.split("-")[1]
                                   ) - 1
-                                  ]
+                                ]
                                   }   `,
                                 style: "underline",
                               },
@@ -947,22 +947,22 @@ const Admin = (props) => {
                         },
                         images: {
                           signature_1: `${viewDetail.step1_signature
-                              ? `${viewDetail.step1_signature}`.length > 0
-                                ? viewDetail.step1_signature
-                                : props.env.imageWhite
+                            ? `${viewDetail.step1_signature}`.length > 0
+                              ? viewDetail.step1_signature
                               : props.env.imageWhite
+                            : props.env.imageWhite
                             }`,
                           signature_2: `${viewDetail.step2_signature
-                              ? `${viewDetail.step2_signature}`.length > 0
-                                ? viewDetail.step2_signature
-                                : props.env.imageWhite
+                            ? `${viewDetail.step2_signature}`.length > 0
+                              ? viewDetail.step2_signature
                               : props.env.imageWhite
+                            : props.env.imageWhite
                             }`,
                           signature_3: `${viewDetail.step3_signature
-                              ? `${viewDetail.step3_signature}`.length > 0
-                                ? viewDetail.step3_signature
-                                : props.env.imageWhite
+                            ? `${viewDetail.step3_signature}`.length > 0
+                              ? viewDetail.step3_signature
                               : props.env.imageWhite
+                            : props.env.imageWhite
                             }`,
                         },
                       };
@@ -972,8 +972,27 @@ const Admin = (props) => {
                     Export PDF
                   </button>
                 </div>
-                <div className="col-md-8 mb-3">
-                  <GGMap {...props} />
+                <div className="col-md-6 mb-3">
+                  <div className="row">
+                    <div className="col-6 mb-3">
+                      <h5>คำนวนค่าใช้จ่าย</h5>
+                    </div>
+                  </div>
+
+                  {(() => {
+                    if (viewDetail) {
+                      return <>
+                        <p style={{ margin: "unset" }}><b>จุดเริ่มต้น : </b>{JSON.parse(viewDetail.mapdata)['start']}</p>
+                        <p style={{ margin: "unset" }}><b>จุดสิ้นสุด : </b>{JSON.parse(viewDetail.mapdata)['end']}</p>
+                        <p style={{ margin: "unset" }}><b>ระยะทาง : </b>{JSON.parse(viewDetail.mapdata)['distance']}</p>
+                        <p style={{ margin: "unset" }}><b>ระยะเวลาการเดินทาง : </b>{JSON.parse(viewDetail.mapdata)['time']}</p>
+                        <p style={{ margin: "unset" }}><b>ค่าใช้จ่ายโดยประมาณ : </b>{JSON.parse(viewDetail.mapdata)['cost']}</p>
+                      </>
+                    }
+                    return null
+                  })()}
+
+
                 </div>
               </div>
             </div>

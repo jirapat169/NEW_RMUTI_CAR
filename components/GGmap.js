@@ -66,8 +66,11 @@ class AutocompleteDirectionsHandler {
   }
 }
 
+
+
 const GGMap = (props) => {
   const [mapData, setMapData] = React.useState([]);
+
 
   React.useEffect(() => {
     let rmutiLocation = { lat: 14.988319611169972, lng: 102.11773235118517 };
@@ -90,6 +93,16 @@ const GGMap = (props) => {
 
   React.useEffect(() => {
     console.log(mapData);
+    if (mapData.length > 0) {
+      props.dataGGmap && props.dataGGmap({
+        start: mapData[0].legs[0].start_address,
+        end: mapData[0].legs[0].end_address,
+        distance: mapData[0].legs[0].distance.text,
+        time: mapData[0].legs[0].duration.text,
+        cost: parseInt(mapData[0]["legs"][0]["distance"]["text"]) *
+          4
+      })
+    }
   }, [mapData]);
 
   return (

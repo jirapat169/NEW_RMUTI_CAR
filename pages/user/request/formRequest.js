@@ -2,20 +2,21 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
+import GGMap from "../../../components/GGmap";
 
 const FormRequest = (props) => {
   // console.log("props -> ", props);
   const lsST = props.onInsertRequest
     ? ""
     : `${props.defaultValue.list_student}`.length > 0
-    ? `${props.defaultValue.list_student}`.split(",")
-    : [];
+      ? `${props.defaultValue.list_student}`.split(",")
+      : [];
 
   const lsTA = props.onInsertRequest
     ? ""
     : `${props.defaultValue.list_teacher}`.length > 0
-    ? `${props.defaultValue.list_teacher}`.split(",")
-    : [];
+      ? `${props.defaultValue.list_teacher}`.split(",")
+      : [];
 
   const { control, handleSubmit, reset, setValue } = useForm(
     props.defaultValue
@@ -33,6 +34,7 @@ const FormRequest = (props) => {
   const [counterStudent, setCounterStudent] = React.useState(lsST.length);
   const [doc1, setDoc1] = React.useState(props.defaultValue.doc1);
   const [doc2, setDoc2] = React.useState(props.defaultValue.doc2);
+  const [mapData, setMapData] = React.useState(props.defaultValue.mapdata);
 
   const [dateStart, setDateStart] = React.useState(
     `${props.defaultValue.date_start}`.length > 0
@@ -41,6 +43,10 @@ const FormRequest = (props) => {
   );
 
   const onSubmit = (data) => {
+    if (mapData.length <= 0) {
+      alert("โปรดคำนวนค่าใช้จ่าย")
+      return
+    }
     let tmp = {
       id: props.onInsertRequest ? "" : props.defaultValue.id,
       insertStatus: props.onInsertRequest,
@@ -49,6 +55,7 @@ const FormRequest = (props) => {
       doc1: doc1,
       doc2: doc2,
       username: props.userLogin.username,
+      mapdata: mapData
     };
     data = { ...data, ...tmp };
 
@@ -58,6 +65,7 @@ const FormRequest = (props) => {
         // console.log(val.data);
         props.getRequest();
         window.$(`#formCarModal`).modal("hide");
+        window.location.reload()
       })
       .catch((reason) => {
         console.log(reason);
@@ -65,6 +73,7 @@ const FormRequest = (props) => {
   };
 
   React.useEffect(() => {
+    setMapData(props.defaultValue.mapdata)
     setDefaultValue(props.defaultValue);
     setListTeacher(props.onInsertRequest ? [] : lsTA.map((e, i) => i));
     setListStudent(props.onInsertRequest ? [] : lsST.map((e, i) => i));
@@ -568,6 +577,42 @@ const FormRequest = (props) => {
                         </tbody>
                       </table>
                     </div>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-12">
+                    {(() => {
+                      if (mapData.length <= 0) {
+                        return <GGMap {...props} dataGGmap={(e) => {
+                          setMapData(JSON.stringify(e))
+                        }} />
+                      } else {
+                        return <div>
+                          <div className="row">
+                            <div className="col-6 mb-3">
+                              <div className="row">
+                                <div className="col-6">
+                                  <h5>คำนวนค่าใช้จ่าย</h5>
+                                </div>
+                                <div className="col-6 text-right">
+                                  <button type="button" className="btn btn-warning btn-sm" onClick={() => {
+                                    setMapData("")
+                                  }}>แก้ไข</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <p style={{ margin: "unset" }}><b>จุดเริ่มต้น : </b>{JSON.parse(mapData)['start']}</p>
+                          <p style={{ margin: "unset" }}><b>จุดสิ้นสุด : </b>{JSON.parse(mapData)['end']}</p>
+                          <p style={{ margin: "unset" }}><b>ระยะทาง : </b>{JSON.parse(mapData)['distance']}</p>
+                          <p style={{ margin: "unset" }}><b>ระยะเวลาการเดินทาง : </b>{JSON.parse(mapData)['time']}</p>
+                          <p style={{ margin: "unset" }}><b>ค่าใช้จ่ายโดยประมาณ : </b>{JSON.parse(mapData)['cost']}</p>
+                        </div>
+                      }
+                    })()}
+
                   </div>
                 </div>
               </div>
