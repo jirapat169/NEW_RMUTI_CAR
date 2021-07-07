@@ -232,7 +232,32 @@ const Dashboard = (props) => {
           icon: "fas fa-id-badge",
         },
       ]);
-    } else if (props.userLogin.myrole == "5") {
+    }
+    else if (props.userLogin.myrole == "7") {
+      setMenuList([
+        {
+          pathname: "/home",
+          title: "หน้าหลัก",
+          icon: "fas fa-home",
+        },
+        {
+          pathname: "/sol3/requestcar",
+          title: "ตรวจสอบการขอใช้",
+          icon: "fas fa-check-square",
+        },
+        {
+          pathname: "/rolemanage",
+          title: "จัดการผู้อนุมัติแทน",
+          icon: "fas fa-user-tag",
+        },
+        {
+          pathname: "/profile",
+          title: "ข้อมูลส่วนตัว",
+          icon: "fas fa-id-badge",
+        },
+      ]);
+    }
+    else if (props.userLogin.myrole == "5") {
       setMenuList([
         {
           pathname: "/home",
@@ -391,6 +416,42 @@ const Dashboard = (props) => {
               if (`${props.userLogin.role}`.indexOf("2") != -1) {
                 return (
                   <Link href={`/sol1/requestcar`}>
+                    <div
+                      className={
+                        props.tabSidenav
+                          ? "link-theme"
+                          : "link-theme text-center"
+                      }
+                    >
+                      <i
+                        className={"fas fa-check-square"}
+                        style={{ width: "20px" }}
+                      ></i>
+                      {props.tabSidenav && (
+                        <>
+                          <span className="ml-3">{"ตรวจสอบการขอใช้"}</span>
+                          <span
+                            style={{
+                              display: "block",
+                              textAlign: "right",
+                              color: "#DC3545",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {"(แทนผู้อำนวยการกองกลาง)"}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </Link>
+                );
+              }
+            })()}
+
+            {(() => {
+              if (`${props.userLogin.role}`.indexOf("7") != -1) {
+                return (
+                  <Link href={`/sol3/requestcar`}>
                     <div
                       className={
                         props.tabSidenav

@@ -928,6 +928,19 @@ const Admin = (props) => {
                             margin: [0, 0, 0, 14],
                           },
                           {
+                            image: `user_signature`,
+                            width: 100,
+                            alignment: "right",
+                          },
+                          {
+                            text: [
+                              { text: `   ${viewDetail.user_request_name}   `, style: "underline", },
+                              `   ผู้ขออนุญาต   `,
+                            ],
+                            alignment: "right",
+                            margin: [0, 0, 0, 14],
+                          },
+                          {
                             image: `signature_1`,
                             width: 100,
                             alignment: "right",
@@ -946,6 +959,12 @@ const Admin = (props) => {
                           },
                         },
                         images: {
+                          user_signature: `${viewDetail.user_signature
+                            ? `${viewDetail.user_signature}`.length > 0
+                              ? viewDetail.user_signature
+                              : props.env.imageWhite
+                            : props.env.imageWhite
+                            }`,
                           signature_1: `${viewDetail.step1_signature
                             ? `${viewDetail.step1_signature}`.length > 0
                               ? viewDetail.step1_signature
